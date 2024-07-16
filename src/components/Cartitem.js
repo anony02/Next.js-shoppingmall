@@ -23,8 +23,10 @@ export default function Cartitem({ id, quantity, product, changecnt, deleteItem 
           <div className={styles.info}>
             <div className={styles.title}>{product.title}</div>
             <div>
-              <span className={styles.discount}>{product.discountPercentage}%</span>
-              <span className={styles.price}>{(product.price * 1350).toLocaleString("ko-KR")}원</span>
+              {Math.round(product.discountPercentage) !== 0 && (
+                <span className={styles.discount}>{Math.round(product.discountPercentage)}%</span>
+              )}
+              <span className={styles.price}>{parseInt(product.price * 1350).toLocaleString("ko-KR")}원</span>
             </div>
             <div className={styles.stock}>
               <span>(남은수량 : {product.stock})</span>
@@ -54,7 +56,7 @@ export default function Cartitem({ id, quantity, product, changecnt, deleteItem 
                 />
                 <button onClick={plus}>+</button>
               </div>
-              <div>{(product.price * count * 1350).toLocaleString("ko-KR")}원</div>
+              <div>{parseInt(product.price * count * 1350).toLocaleString("ko-KR")}원</div>
             </div>
           </div>
         </>

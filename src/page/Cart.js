@@ -46,7 +46,7 @@ export default function Cart() {
       const product = products[id];
       total += product.price * 1350 * count;
     });
-    setTotalPrice(total);
+    setTotalPrice(parseInt(total));
   };
   return (
     <div className={styles.cart}>
