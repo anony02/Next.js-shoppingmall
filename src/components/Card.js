@@ -10,8 +10,10 @@ export default function Card({ id, thumbnail, title, discountPercentage, price, 
           <div className={styles.title}>{title}</div>
           <div>평점 : {rating}/5점</div>
           <div>
-            <span className={styles.discount}>{Math.round(discountPercentage)}%</span>
-            <span className={styles.price}>{(price * 1350).toLocaleString("ko-KR")}원</span>
+            {Math.round(discountPercentage) !== 0 && (
+              <span className={styles.discount}>{Math.round(discountPercentage)}%</span>
+            )}
+            <span className={styles.price}>{parseInt(price * 1350).toLocaleString("ko-KR")}원</span>
           </div>
           <div>
             <span>남은수량 : {stock}</span>

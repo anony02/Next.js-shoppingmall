@@ -23,8 +23,10 @@ export default function Detail() {
         <div>{list.description}</div>
         <div>평점 : {list.rating}/5점</div>
         <div>
-          <span className={styles.discount}>{Math.round(list.discountPercentage)}%</span>
-          <span className={styles.price}>{(list.price * 1350).toLocaleString("ko-KR")}원</span>
+          {Math.round(list.discountPercentage) !== 0 && (
+            <span className={styles.discount}>{Math.round(list.discountPercentage)}%</span>
+          )}
+          <span className={styles.price}>{parseInt(list.price * 1350).toLocaleString("ko-KR")}원</span>
         </div>
         <div className={styles.stock}>
           <span>(남은수량 : {list.stock})</span>
@@ -49,7 +51,7 @@ export default function Detail() {
             ></input>
             <button onClick={() => setCount(count === list.stock ? 0 : (x) => x + 1)}>+</button>
           </div>
-          <div>{(count * list.price * 1350).toLocaleString("ko-KR")}원</div>
+          <div>{parseInt(count * list.price * 1350).toLocaleString("ko-KR")}원</div>
         </div>
         <button
           onClick={() => {

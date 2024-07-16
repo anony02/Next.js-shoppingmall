@@ -6,15 +6,17 @@ import Search from "./Search";
 
 export default function Nav() {
   const [list, setList] = useState([]);
-  useEffect(
-    () =>
-      async function callAPI() {
-        axios("https://dummyjson.com/products/categories").then((res) => {
-          setList(res.data);
-        });
-      },
-    []
-  );
+  useEffect(() => {
+    async function callAPI() {
+      try {
+        const response = await axios.get("https://dummyjson.com/products/category-list");
+        setList(response.data);
+      } catch (error) {
+        console.error("API call error:", error);
+      }
+    }
+    callAPI();
+  }, []);
   return (
     <div className={styles.nav}>
       <div className={styles.leftwrap}>
@@ -40,9 +42,9 @@ export default function Nav() {
             </g>
           </svg>
           <div className={styles.list}>
-            {list.map((el) => (
-              <Link className={styles.link} key={el} to={`/${el}`}>
-                {el + "\n"}
+            {list.map((category) => (
+              <Link className={styles.link} key={category} to={`/${category}`}>
+                {category + "\n"}
               </Link>
             ))}
           </div>

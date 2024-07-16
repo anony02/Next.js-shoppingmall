@@ -5,15 +5,17 @@ import Card from "../components/Card";
 
 export default function Main() {
   const [list, setList] = useState([]);
-  useEffect(
-    () =>
-      async function callAPI() {
-        axios("https://dummyjson.com/products?limit=0").then((res) => {
-          setList(res.data.products);
-        });
-      },
-    []
-  );
+  useEffect(() => {
+    async function callAPI() {
+      try {
+        const response = await axios.get("https://dummyjson.com/products?limit=0");
+        setList(response.data.products);
+      } catch (error) {
+        console.error("API call error:", error);
+      }
+    }
+    callAPI();
+  }, []);
   return (
     <div className={styles.main}>
       <div className={styles.filters}>
