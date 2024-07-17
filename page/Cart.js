@@ -1,7 +1,7 @@
 import styles from "./Cart.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Cartitem from "../components/Cartitem";
 
 export default function Cart() {
@@ -53,7 +53,7 @@ export default function Cart() {
       {Object.entries(cart).length === 0 ? (
         <>
           장바구니에 상품이 없습니다.
-          <Link className={styles.tohome} to="/">
+          <Link className={styles.tohome} href="/">
             쇼핑하러가기
           </Link>
         </>

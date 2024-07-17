@@ -1,20 +1,19 @@
-import { useParams } from "react-router-dom";
 import styles from "./Detail.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function Detail() {
-  const { id } = useParams();
+export default function Detail({ id }) {
+  const params = id;
   const [list, setList] = useState([]);
   const [count, setCount] = useState(0);
   useEffect(() => {
     async function callAPI() {
-      await axios(`https://dummyjson.com/products/${id}`).then((res) => {
+      await axios(`https://dummyjson.com/products/${params}`).then((res) => {
         setList(res.data);
       });
     }
     callAPI();
-  }, [id]);
+  }, [params]);
   return (
     <div className={styles.detail}>
       <img className={styles.img} src={list.thumbnail} alt="" />

@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import styles from "./Card.module.css";
 
 export default function Card({ id, thumbnail, title, discountPercentage, price, rating, stock }) {
   return (
     <li className={styles.card}>
-      <Link className={styles.linkwrap} to={`/detail/${id}`}>
+      <Link className={styles.linkwrap} href={`/detail/${id}`}>
         <img className={styles.img} src={thumbnail} alt="" />
         <div className={styles.info}>
           <div className={styles.title}>{title}</div>

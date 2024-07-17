@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import styles from "./Nav.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -43,19 +43,19 @@ export default function Nav() {
           </svg>
           <div className={styles.list}>
             {list.map((category) => (
-              <Link className={styles.link} key={category} to={`/${category}`}>
+              <Link className={styles.link} key={category} href={`/${category}`}>
                 {category + "\n"}
               </Link>
             ))}
           </div>
         </div>
-        <Link className={styles.logo} to="/">
+        <Link className={styles.logo} href="/">
           Shopping mall
         </Link>
       </div>
       <div className={styles.rightwrap}>
         <Search />
-        <Link className={styles.btnwrap} to="/login">
+        <Link className={styles.btnwrap} href="/login">
           <svg className={styles.btn} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000">
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
@@ -65,7 +65,7 @@ export default function Nav() {
             </g>
           </svg>
         </Link>
-        <Link className={styles.btnwrap} to="/cart">
+        <Link className={styles.btnwrap} href="/cart">
           <svg className={styles.btn} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>

@@ -1,5 +1,5 @@
 import styles from "./Footer.module.css";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -18,7 +18,7 @@ export default function Footer() {
         <div>주말, 공휴일 : 휴무</div>
       </div>
       <div className={`${styles.container} ${styles.btnwrap}`}>
-        <Link to="https://www.instagram.com/" target="_blank">
+        <Link href="https://www.instagram.com/" target="_blank">
           <svg className={styles.btn} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
@@ -82,7 +82,7 @@ export default function Footer() {
             </g>
           </svg>
         </Link>
-        <Link to="https://www.kakaocorp.com/page/" target="_blank">
+        <Link href="https://www.kakaocorp.com/page/" target="_blank">
           <svg className={styles.btn} viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" fill="#000000">
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
@@ -99,7 +99,7 @@ export default function Footer() {
             </g>
           </svg>
         </Link>
-        <Link to="https://line.me/ko/" target="_blank">
+        <Link href="https://line.me/ko/" target="_blank">
           <svg className={styles.btn} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>

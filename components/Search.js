@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./Search.module.css";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 export default function Search() {
   const [list, setList] = useState([]);
@@ -72,7 +72,7 @@ export default function Search() {
                   setInput(el);
                   setExist(false);
                 }}
-                to={`/detail/${findid(el)}`}
+                href={`/detail/${findid(el)}`}
               >
                 {el + "\n"}
               </Link>

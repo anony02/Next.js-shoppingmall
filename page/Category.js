@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
 import styles from "./Category.module.css";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 import Card from "../components/Card";
 
-export default function Category() {
-  const { category } = useParams();
+export default function Category({ category }) {
+  const params = category;
   const [list, setList] = useState([]);
   useEffect(() => {
     async function callAPI() {
-      await axios(`https://dummyjson.com/products/category/${category}`).then((res) => {
+      await axios(`https://dummyjson.com/products/category/${params}`).then((res) => {
         setList(res.data.products);
       });
     }
     callAPI();
-  }, [category]);
+  }, [params]);
   return (
     <div className={styles.main}>
       <div className={styles.filters}>
