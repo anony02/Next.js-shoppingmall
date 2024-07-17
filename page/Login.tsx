@@ -3,12 +3,12 @@ import Link from "next/link";
 import styles from "./Login.module.css";
 import { useState } from "react";
 
-export default function Login() {
+export default function Login() :React.ReactElement {
   const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
   const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
   const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-  const [id, setId] = useState("");
-  const [pw, setPw] = useState("");
+  const [id, setId] = useState<string>("");
+  const [pw, setPw] = useState<string>("");
   const router = useRouter();
   return (
     <div className={styles.login}>
@@ -25,7 +25,7 @@ export default function Login() {
           <input type="password" onChange={(e) => setPw(e.target.value)} placeholder="비밀번호"></input>
         </div>
         <div className={styles.container}>
-          <button onClick={(e) => (pw.length < 6 ? alert("비밀번호는 6자리 이상입니다") : router("/"))}>
+          <button onClick={(e) => (pw.length < 6 ? alert("비밀번호는 6자리 이상입니다") : router.push("/"))}>
             로그인하기
           </button>
         </div>

@@ -1,13 +1,13 @@
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import Login from "../page/Login";
+import Cart from "../page/Cart";
 
-const LoginPage = () => (
+const CartPage : React.FC = () => (
   <>
     <Nav />
-    <Login />
+    <Cart />
     <Footer />
   </>
 );
 
-export default LoginPage;
+export default CartPage;

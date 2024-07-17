@@ -4,13 +4,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Search from "./Search";
 
-export default function Nav() {
-  const [list, setList] = useState([]);
+type CategoryList = string[];
+
+export default function Nav(): React.ReactElement {
+  const [list, setList] = useState<CategoryList>([]);
   useEffect(() => {
     async function callAPI() {
       try {
-        const response = await axios.get("https://dummyjson.com/products/category-list");
+        const response = await axios.get<CategoryList>("https://dummyjson.com/products/category-list");
         setList(response.data);
+        console.log(response.data)
       } catch (error) {
         console.error("API call error:", error);
       }
@@ -18,7 +21,7 @@ export default function Nav() {
     callAPI();
   }, []);
   return (
-    <div className={styles.nav}>
+    <nav className={styles.nav}>
       <div className={styles.leftwrap}>
         <div className={styles.category}>
           <svg className={styles.btn} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -81,6 +84,6 @@ export default function Nav() {
           </svg>
         </Link>
       </div>
-    </div>
+    </nav>
   );
 }

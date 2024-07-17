@@ -1,20 +1,53 @@
 import { useState } from "react";
 import styles from "./Cartitem.module.css";
 
-export default function Cartitem({ id, quantity, product, changecnt, deleteItem }) {
+interface Product {
+  title: string;
+  thumbnail: string;
+  price: number;
+  stock: number;
+  discountPercentage: number;
+}
+
+interface CartitemProps {
+  id:number;
+  quantity:number;
+  product:Product;
+  changecnt: (id: number, count: number) => void;
+  deleteItem: (id: number) => void;
+}
+
+export default function Cartitem({ id, quantity, product, changecnt, deleteItem }:CartitemProps) : React.ReactElement {
   const [count, setCount] = useState(quantity);
+
   const minus = () => {
     if (count > 1) {
       setCount(count - 1);
       changecnt(id, count - 1);
     }
   };
+
   const plus = () => {
     if (count < product.stock) {
       setCount(count + 1);
       changecnt(id, count + 1);
     }
   };
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (isNaN(value)) {
+      alert("숫자를 입력해주세요");
+      return;
+    }
+    if (value > product.stock) {
+      alert("남은 수량을 확인해주세요");
+      return;
+    }
+    setCount(value);
+    changecnt(id, value);
+  };
+
   return (
     <div className={styles.cartitem}>
       {product ? (
@@ -26,7 +59,7 @@ export default function Cartitem({ id, quantity, product, changecnt, deleteItem 
               {Math.round(product.discountPercentage) !== 0 && (
                 <span className={styles.discount}>{Math.round(product.discountPercentage)}%</span>
               )}
-              <span className={styles.price}>{parseInt(product.price * 1350).toLocaleString("ko-KR")}원</span>
+              <span className={styles.price}>{Math.round(product.price * 1350).toLocaleString("ko-KR")}원</span>
             </div>
             <div className={styles.stock}>
               <span>(남은수량 : {product.stock})</span>
@@ -42,21 +75,11 @@ export default function Cartitem({ id, quantity, product, changecnt, deleteItem 
                 <button onClick={minus}>-</button>
                 <input
                   value={count}
-                  onChange={(e) => {
-                    if (isNaN(parseInt(e.target.value))) {
-                      alert("숫자를 입력해주세요");
-                      return;
-                    }
-                    if (e.target.value > product.stock) {
-                      alert("남은 수량을 확인해주세요");
-                      return;
-                    }
-                    setCount(parseInt(e.target.value));
-                  }}
+                  onChange={handleChange}
                 />
                 <button onClick={plus}>+</button>
               </div>
-              <div>{parseInt(product.price * count * 1350).toLocaleString("ko-KR")}원</div>
+              <div>{Math.round(product.price * count * 1350).toLocaleString("ko-KR")}원</div>
             </div>
           </div>
         </>

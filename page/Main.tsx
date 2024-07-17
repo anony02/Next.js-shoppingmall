@@ -3,8 +3,18 @@ import styles from "./Main.module.css";
 import axios from "axios";
 import Card from "../components/Card";
 
-export default function Main() {
-  const [list, setList] = useState([]);
+interface Product {
+  id: number;
+  thumbnail: string;
+  title: string;
+  discountPercentage: number;
+  price: number;
+  rating: number;
+  stock: number;
+}
+
+export default function Main():React.ReactElement {
+  const [list, setList] = useState<Product[]>([]);
   useEffect(() => {
     async function callAPI() {
       try {
@@ -45,7 +55,12 @@ export default function Main() {
   );
 }
 
-const Filter = ({ onClick, name }) => {
+interface FilterProps {
+  onClick: () => void;
+  name: string;
+}
+
+const Filter = ({ onClick, name }: FilterProps): React.ReactElement => {
   return (
     <label className={styles.filter}>
       <input type="radio" name="filter" onClick={onClick}></input>

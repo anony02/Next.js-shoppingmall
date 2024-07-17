@@ -3,17 +3,34 @@ import styles from "./Category.module.css";
 import axios from "axios";
 import Card from "../components/Card";
 
-export default function Category({ category }) {
-  const params = category;
-  const [list, setList] = useState([]);
+interface Product {
+  id: number;
+  thumbnail: string;
+  title: string;
+  discountPercentage: number;
+  price: number;
+  rating: number;
+  stock: number;
+}
+
+interface CategoryProps {
+  category: string;
+}
+
+export default function Category({ category }:CategoryProps):React.ReactElement {
+  const [list, setList] = useState<Product[]>([]);
   useEffect(() => {
     async function callAPI() {
-      await axios(`https://dummyjson.com/products/category/${params}`).then((res) => {
+      try {
+        const res = await axios.get(`https://dummyjson.com/products/category/${category}`);
         setList(res.data.products);
-      });
+      } catch (error) {
+        console.error("API call error:", error);
+      }
     }
     callAPI();
-  }, [params]);
+  }, [category]);
+
   return (
     <div className={styles.main}>
       <div className={styles.filters}>
@@ -43,7 +60,12 @@ export default function Category({ category }) {
   );
 }
 
-const Filter = ({ onClick, name }) => {
+interface FilterProps {
+  onClick: () => void;
+  name: string;
+}
+
+const Filter = ({ onClick, name }:FilterProps): React.ReactElement => {
   return (
     <label className={styles.filter}>
       <input type="radio" name="filter" onClick={onClick}></input>

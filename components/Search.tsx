@@ -3,32 +3,42 @@ import styles from "./Search.module.css";
 import axios from "axios";
 import Link from "next/link";
 
-export default function Search() {
-  const [list, setList] = useState([]);
-  useEffect(
-    () =>
-      async function callAPI() {
-        axios("https://dummyjson.com/products?limit=0").then((res) => {
-          setList(res.data.products);
-        });
-      },
-    []
-  );
+interface Product {
+  id: number;
+  title: string;
+  [key: string]: any;
+}
+
+export default function Search() :React.ReactElement {
+  const [list, setList] = useState<Product[]>([]);
+  useEffect(() => {
+    const callAPI = async () => {
+      try {
+        const res = await axios.get("https://dummyjson.com/products?limit=0");
+        setList(res.data.products);
+      } catch (error) {
+        console.error("API 호출 에러:", error);
+      }
+    };
+    
+    callAPI();
+  }, []);
+  
   const title = list.map((x) => x.title);
   const id = list.map((x) => x.id);
-  const findid = (x) => id[title.indexOf(x)];
-  const [input, setInput] = useState("");
-  const [exist, setExist] = useState(false);
-  const [dropdown, setDropdown] = useState([]);
-  const [idx, setIdx] = useState(-1);
-  const onchange = (e) => {
+  const findid = (x:string) => id[title.indexOf(x)];
+  const [input, setInput] = useState<string>("");
+  const [exist, setExist] = useState<boolean>(false);
+  const [dropdown, setDropdown] = useState<string[]>([]);
+  const [idx, setIdx] = useState<number>(-1);
+  const onchange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
     setExist(true);
   };
-  const onclick = (e) => {
+  const onclick = (e:string) => {
     setInput(e);
   };
-  const onkeyup = (e) => {
+  const onkeyup = (e:React.KeyboardEvent<HTMLInputElement>) => {
     if (!exist) return;
     if (e.key === "ArrowDown" && dropdown.length > idx + 1) {
       setIdx(idx + 1);
