@@ -4,18 +4,37 @@ import axios from "axios";
 import Link from "next/link";
 import Cartitem from "../components/Cartitem";
 
-export default function Cart() {
-  const [cart, setCart] = useState({});
-  const [products, setProducts] = useState({});
-  const [totalPrice, setTotalPrice] = useState(0);
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  [key: string]: any;
+  thumbnail: string;
+  stock: number;
+  discountPercentage: number;
+}
+
+interface CartState {
+  [key: number]: number;
+}
+
+interface ProductsState {
+  [key: string]: Product;
+}
+
+export default function Cart() : React.ReactElement {
+  const [cart, setCart] = useState<CartState>({});
+  const [products, setProducts] = useState<ProductsState>({});
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  
   useEffect(() => {
-    const obj = JSON.parse(localStorage.getItem("cart")) || {};
+    const obj = JSON.parse(localStorage.getItem("cart")|| "{}") ;
     setCart(obj);
     const idList = Object.keys(obj);
     const getData = async () => {
       try {
-        const resList = await Promise.all(idList.map((id) => axios.get(`https://dummyjson.com/products/${id}`)));
-        const datas = {};
+        const resList = await Promise.all(idList.map((id) => axios.get<Product>(`https://dummyjson.com/products/${id}`)));
+        const datas: ProductsState = {};
         resList.forEach((res) => {
           datas[res.data.id] = res.data;
         });
@@ -27,26 +46,27 @@ export default function Cart() {
     };
     getData();
   }, []);
-  const deleteItem = (id) => {
+  
+  const deleteItem = (id:number) => {
     const copiedCart = { ...cart };
     delete copiedCart[id];
     localStorage.setItem("cart", JSON.stringify(copiedCart));
     setCart(copiedCart);
     changeTotal(copiedCart, products);
   };
-  const changecnt = (id, count) => {
+  const changecnt = (id : number, count : number) => {
     const changedCart = { ...cart, [id]: count };
     localStorage.setItem("cart", JSON.stringify(changedCart));
     setCart(changedCart);
     changeTotal(changedCart, products);
   };
-  const changeTotal = (cart, products) => {
+  const changeTotal = (cart: CartState, products: ProductsState) => {
     let total = 0;
     Object.entries(cart).forEach(([id, count]) => {
       const product = products[id];
       total += product.price * 1350 * count;
     });
-    setTotalPrice(parseInt(total));
+    setTotalPrice(Math.round(total));
   };
   return (
     <div className={styles.cart}>
@@ -62,7 +82,7 @@ export default function Cart() {
           {Object.entries(cart).map(([id, count]) => (
             <Cartitem
               key={id}
-              id={id}
+              id={Number(id)}
               quantity={count}
               product={products[id]}
               changecnt={changecnt}

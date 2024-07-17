@@ -2,18 +2,37 @@ import styles from "./Detail.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function Detail({ id }) {
-  const params = id;
-  const [list, setList] = useState([]);
-  const [count, setCount] = useState(0);
+interface Product {
+  id: number;
+  thumbnail: string;
+  title: string;
+  description: string;
+  discountPercentage: number;
+  price: number;
+  rating: number;
+  stock: number;
+}
+
+interface DetailProps {
+  id: string;
+}
+
+export default function Detail({ id }:DetailProps):React.ReactElement {
+  const [list, setList] = useState<Product | null>(null);
+  const [count, setCount] = useState<number>(0);
   useEffect(() => {
     async function callAPI() {
-      await axios(`https://dummyjson.com/products/${params}`).then((res) => {
+      await axios(`https://dummyjson.com/products/${id}`).then((res) => {
         setList(res.data);
       });
     }
     callAPI();
-  }, [params]);
+  }, [id]);
+
+  if (!list) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className={styles.detail}>
       <img className={styles.img} src={list.thumbnail} alt="" />
@@ -25,7 +44,7 @@ export default function Detail({ id }) {
           {Math.round(list.discountPercentage) !== 0 && (
             <span className={styles.discount}>{Math.round(list.discountPercentage)}%</span>
           )}
-          <span className={styles.price}>{parseInt(list.price * 1350).toLocaleString("ko-KR")}원</span>
+          <span className={styles.price}>{Math.round(list.price * 1350).toLocaleString("ko-KR")}원</span>
         </div>
         <div className={styles.stock}>
           <span>(남은수량 : {list.stock})</span>
@@ -37,30 +56,33 @@ export default function Detail({ id }) {
             <input
               value={count}
               onChange={(e) => {
-                if (isNaN(parseInt(e.target.value))) {
+                const value = parseInt(e.target.value)
+                if (isNaN(value)) {
                   alert("숫자를 입력해주세요");
                   return;
                 }
-                if (e.target.value > list.stock) {
+                if (value > list.stock) {
                   alert("남은 수량을 확인해주세요");
                   return;
                 }
-                setCount(parseInt(e.target.value));
+                setCount(value);
               }}
             ></input>
             <button onClick={() => setCount(count === list.stock ? 0 : (x) => x + 1)}>+</button>
           </div>
-          <div>{parseInt(count * list.price * 1350).toLocaleString("ko-KR")}원</div>
+          <div>{Math.round(count * list.price * 1350).toLocaleString("ko-KR")}원</div>
         </div>
         <button
           onClick={() => {
-            if (localStorage.getItem("cart") === null) {
-              localStorage.setItem("cart", `{"${list.id}": ${count}}`);
+            const cart = localStorage.getItem("cart");
+            let obj;
+            if (cart === null) {
+              obj = {[list.id]:count};
             } else {
-              let obj = JSON.parse(localStorage.getItem("cart"));
+              obj = JSON.parse(cart);
               obj[list.id] = count;
-              localStorage.setItem("cart", JSON.stringify(obj));
             }
+            localStorage.setItem("cart",JSON.stringify(obj))
             alert("장바구니에 상품이 추가되었습니다.");
           }}
         >

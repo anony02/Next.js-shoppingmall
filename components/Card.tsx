@@ -1,7 +1,17 @@
 import Link from "next/link";
 import styles from "./Card.module.css";
 
-export default function Card({ id, thumbnail, title, discountPercentage, price, rating, stock }) {
+interface CardProps {
+  id: number;
+  thumbnail: string;
+  title: string;
+  discountPercentage: number;
+  price: number;
+  rating: number;
+  stock: number;
+}
+
+export default function Card({ id, thumbnail, title, discountPercentage, price, rating, stock }:CardProps):React.ReactElement {
   return (
     <li className={styles.card}>
       <Link className={styles.linkwrap} href={`/detail/${id}`}>
@@ -13,7 +23,7 @@ export default function Card({ id, thumbnail, title, discountPercentage, price, 
             {Math.round(discountPercentage) !== 0 && (
               <span className={styles.discount}>{Math.round(discountPercentage)}%</span>
             )}
-            <span className={styles.price}>{parseInt(price * 1350).toLocaleString("ko-KR")}원</span>
+            <span className={styles.price}>{Math.round(price * 1350).toLocaleString("ko-KR")}원</span>
           </div>
           <div>
             <span>남은수량 : {stock}</span>
