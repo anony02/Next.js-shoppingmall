@@ -1,0 +1,42 @@
+.main {
+  padding: 50px;
+}
+
+/* ul,
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+label:hover {
+  font-weight: 900;
+  color: #0b57d0;
+}
+
+input:checked + span {
+  font-weight: 900;
+  color: #0b57d0;
+} */
+
+.filters {
+  height: 50px;
+  font-size: 10px;
+}
+
+.filter {
+  display: inline;
+  line-height: 50px;
+  font-size: 10px;
+  padding: 0 5px;
+}
+
+.filter > input {
+  display: none;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 250px);
+  font-size: 10px;
+}

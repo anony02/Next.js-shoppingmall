@@ -1,0 +1,43 @@
+.footer {
+  display: flex;
+  padding: 0 20px;
+  background-color: rgba(240, 240, 240);
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  height: 200px;
+  width: 300px;
+  font-size: 12px;
+  padding: 50px;
+}
+
+.container > div {
+  width: 200px;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.cs {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.btnwrap {
+  display: flex;
+  align-items: flex-end;
+}
+
+.btn {
+  height: 30px;
+  margin: 5px;
+  border-radius: 8px;
+}
+
+.btn:hover {
+  opacity: 0.5;
+}
