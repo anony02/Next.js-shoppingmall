@@ -1,8 +1,7 @@
 import styles from "./Cart.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-// import { Link } from "react-router-dom";
-import Link from "next/Link";
+import Link from "next/link";
 import Cartitem from "../components/Cartitem";
 
 export default function Cart() {

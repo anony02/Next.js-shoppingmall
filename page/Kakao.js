@@ -1,10 +1,10 @@
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/router";
 import styles from "./Kakao.module.css";
 import { useEffect, useState } from "react";
 
 export default function Kakao() {
   const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter();
   useEffect(() => {
     const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
     const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
@@ -26,7 +26,7 @@ export default function Kakao() {
         console.log(res.access_token);
       });
       setSuccess(true);
-      navigate("/");
+      router.push("/");
     } catch (error) {
       console.log(error);
       setSuccess(false);

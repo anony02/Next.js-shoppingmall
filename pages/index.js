@@ -1,6 +1,6 @@
-import Nav from "../components/Nav";
-import Footer from "../components/Footer";
-import Main from "./main";
+import Nav from '../components/Nav';
+import Footer from '../components/Footer';
+import Main from '../page/Main';
 
 const Home = () => (
   <>

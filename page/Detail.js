@@ -1,4 +1,3 @@
-// import { useParams } from "react-router-dom";
 import styles from "./Detail.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";

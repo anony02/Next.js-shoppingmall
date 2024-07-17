@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./Category.module.css";
 import axios from "axios";
-// import { useParams } from "react-router-dom";
 import Card from "../components/Card";
 
 export default function Category({ category }) {

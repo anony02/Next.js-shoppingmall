@@ -1,4 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useRouter } from "next/router";
+import Link from "next/link";
 import styles from "./Login.module.css";
 import { useState } from "react";
 
@@ -8,10 +9,10 @@ export default function Login() {
   const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
-  const navigate = useNavigate();
+  const router = useRouter();
   return (
     <div className={styles.login}>
-      <Link className={styles.logo} to="/">
+      <Link className={styles.logo} href="/">
         Shopping mall
       </Link>
       <div className={styles.wrap}>
@@ -24,14 +25,14 @@ export default function Login() {
           <input type="password" onChange={(e) => setPw(e.target.value)} placeholder="비밀번호"></input>
         </div>
         <div className={styles.container}>
-          <button onClick={(e) => (pw.length < 6 ? alert("비밀번호는 6자리 이상입니다") : navigate("/"))}>
+          <button onClick={(e) => (pw.length < 6 ? alert("비밀번호는 6자리 이상입니다") : router("/"))}>
             로그인하기
           </button>
         </div>
         <div className={styles.container}>
           <div>간편로그인</div>
           <div className={styles.btnwrap}>
-            <Link to={KAKAO_URL}>
+            <Link href={KAKAO_URL}>
               <svg className={styles.btn} viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" fill="#000000">
                 <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                 <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
