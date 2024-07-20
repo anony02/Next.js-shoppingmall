@@ -1,6 +1,16 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
-import styles from './Kakao.module.css';
 import { useEffect, useState } from 'react';
+
+const kakaoStyle = css`
+  padding-top: 50px;
+  background-clip: content-box;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default function Kakao(): React.ReactElement {
   const [success, setSuccess] = useState<boolean>(false);
@@ -9,7 +19,7 @@ export default function Kakao(): React.ReactElement {
     const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
     const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
     const AUTHORIZE_CODE = new URL(window.location.href).searchParams.get(
-      'code',
+      'code'
     );
     const getToken = async () => {
       const res = await fetch(
@@ -19,7 +29,7 @@ export default function Kakao(): React.ReactElement {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
           },
-        },
+        }
       );
       return res.json();
     };
@@ -36,5 +46,5 @@ export default function Kakao(): React.ReactElement {
     }
   }, []);
 
-  return <div className={styles.kakao}>...</div>;
+  return <div css={kakaoStyle}>...</div>;
 }

@@ -1,31 +1,110 @@
-import styles from "./Footer.module.css";
-import Link from "next/link";
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+import Link from 'next/link';
+
+const footer = css`
+  display: flex;
+  padding: 0 20px;
+  background-color: rgba(240, 240, 240);
+  justify-content: center;
+  align-items: center;
+`;
+
+const container = css`
+  height: 200px;
+  width: 300px;
+  font-size: 12px;
+  padding: 50px;
+
+  & > div {
+    width: 200px;
+  }
+`;
+
+const title = css`
+  font-weight: bold;
+  font-size: 14px;
+`;
+
+const cs = css`
+  font-size: 24px;
+  font-weight: bold;
+`;
+
+const btnwrap = css`
+  display: flex;
+  align-items: flex-end;
+`;
+
+const btn = css`
+  height: 30px;
+  margin: 5px;
+  border-radius: 8px;
+
+  &:hover {
+    opacity: 0.5;
+  }
+`;
 
 export default function Footer() {
   return (
-    <div className={styles.footer}>
-      <div className={styles.container}>
-        <div className={styles.title}>Info.</div>
+    <div css={footer}>
+      <div css={container}>
+        <div css={title}>Info.</div>
         <div>상호 : Shopping mall</div>
         <div>전화번호 : 000-0000-0000</div>
         <div>사업자등록번호 : 000-00-00000</div>
         <div>주소 : OO시 OO로 OOOO</div>
       </div>
-      <div className={styles.container}>
-        <div className={styles.title}>고객센터</div>
-        <div className={styles.cs}>000-0000-0000</div>
+      <div css={container}>
+        <div css={title}>고객센터</div>
+        <div css={cs}>000-0000-0000</div>
         <div>평일 : 09시 ~ 17시</div>
         <div>주말, 공휴일 : 휴무</div>
       </div>
-      <div className={`${styles.container} ${styles.btnwrap}`}>
+      <div
+        css={`
+          ${container} ${btnwrap}
+        `}
+      >
         <Link href="https://www.instagram.com/" target="_blank">
-          <svg className={styles.btn} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            css={btn}
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></g>
             <g id="SVGRepo_iconCarrier">
-              <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint0_radial_87_7153)"></rect>
-              <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint1_radial_87_7153)"></rect>
-              <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint2_radial_87_7153)"></rect>
+              <rect
+                x="2"
+                y="2"
+                width="28"
+                height="28"
+                rx="6"
+                fill="url(#paint0_radial_87_7153)"
+              ></rect>
+              <rect
+                x="2"
+                y="2"
+                width="28"
+                height="28"
+                rx="6"
+                fill="url(#paint1_radial_87_7153)"
+              ></rect>
+              <rect
+                x="2"
+                y="2"
+                width="28"
+                height="28"
+                rx="6"
+                fill="url(#paint2_radial_87_7153)"
+              ></rect>
               <path
                 d="M23 10.5C23 11.3284 22.3284 12 21.5 12C20.6716 12 20 11.3284 20 10.5C20 9.67157 20.6716 9 21.5 9C22.3284 9 23 9.67157 23 10.5Z"
                 fill="white"
@@ -51,7 +130,8 @@ export default function Footer() {
                   gradientUnits="userSpaceOnUse"
                   gradientTransform="translate(12 23) rotate(-55.3758) scale(25.5196)"
                 >
-                  <stop stopColor="#B13589"></stop> <stop offset="0.79309" stopColor="#C62F94"></stop>
+                  <stop stopColor="#B13589"></stop>{' '}
+                  <stop offset="0.79309" stopColor="#C62F94"></stop>
                   <stop offset="1" stopColor="#8A3AC8"></stop>
                 </radialGradient>
                 <radialGradient
@@ -62,7 +142,8 @@ export default function Footer() {
                   gradientUnits="userSpaceOnUse"
                   gradientTransform="translate(11 31) rotate(-65.1363) scale(22.5942)"
                 >
-                  <stop stopColor="#E0E8B7"></stop> <stop offset="0.444662" stopColor="#FB8A2E"></stop>
+                  <stop stopColor="#E0E8B7"></stop>{' '}
+                  <stop offset="0.444662" stopColor="#FB8A2E"></stop>
                   <stop offset="0.71474" stopColor="#E2425C"></stop>
                   <stop offset="1" stopColor="#E2425C" stopOpacity="0"></stop>
                 </radialGradient>
@@ -83,9 +164,18 @@ export default function Footer() {
           </svg>
         </Link>
         <Link href="https://www.kakaocorp.com/page/" target="_blank">
-          <svg className={styles.btn} viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+          <svg
+            css={btn}
+            viewBox="0 0 256 256"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="#000000"
+          >
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></g>
             <g id="SVGRepo_iconCarrier">
               <path
                 fill="#FFE812"
@@ -100,9 +190,18 @@ export default function Footer() {
           </svg>
         </Link>
         <Link href="https://line.me/ko/" target="_blank">
-          <svg className={styles.btn} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            css={btn}
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></g>
             <g id="SVGRepo_iconCarrier">
               <path
                 d="M30 14.4979C30 8.15792 23.7199 3 15.9999 3C8.28094 3 2 8.15792 2 14.4979C2 20.1817 6.98063 24.9417 13.7084 25.8418C14.1644 25.9412 14.7849 26.146 14.9419 26.5404C15.0831 26.8986 15.0342 27.4598 14.987 27.8216C14.987 27.8216 14.8227 28.8214 14.7873 29.0343C14.7264 29.3926 14.5061 30.4353 15.9999 29.7981C17.4942 29.1609 24.0626 24.9935 26.9998 21.572C29.0287 19.3204 30 17.0353 30 14.4979Z"

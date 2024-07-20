@@ -1,6 +1,6 @@
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
-import Main from '../page/Main';
+import Main from '../containers/Main';
 
 const Home: React.FC = () => (
   <>

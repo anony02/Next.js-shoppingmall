@@ -1,9 +1,9 @@
-import Nav from "../../components/Nav";
-import Footer from "../../components/Footer";
-import Detail from "../../page/Detail";
-import { useRouter } from "next/router";
+import Nav from '../../components/Nav';
+import Footer from '../../components/Footer';
+import Detail from '../../containers/Detail';
+import { useRouter } from 'next/router';
 
-const DetailPage : React.FC = () => {
+const DetailPage: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
 
