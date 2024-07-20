@@ -1,7 +1,33 @@
-import { useEffect, useState } from "react";
-import styles from "./Category.module.css";
-import axios from "axios";
-import Card from "../components/Card";
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import Card from '../components/Card';
+
+const mainStyle = css`
+  padding: 50px;
+`;
+
+const filtersStyle = css`
+  height: 50px;
+  font-size: 10px;
+`;
+
+const filterStyle = css`
+  display: inline;
+  line-height: 50px;
+  font-size: 10px;
+  padding: 0 5px;
+  & > input {
+    display: none;
+  }
+`;
+
+const productsStyle = css`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 250px);
+  font-size: 10px;
+`;
 
 interface Product {
   id: number;
@@ -17,32 +43,51 @@ interface CategoryProps {
   category: string;
 }
 
-export default function Category({ category }:CategoryProps):React.ReactElement {
+export default function Category({
+  category,
+}: CategoryProps): React.ReactElement {
   const [list, setList] = useState<Product[]>([]);
   useEffect(() => {
     async function callAPI() {
       try {
-        const res = await axios.get(`https://dummyjson.com/products/category/${category}`);
+        const res = await axios.get(
+          `https://dummyjson.com/products/category/${category}`
+        );
         setList(res.data.products);
       } catch (error) {
-        console.error("API call error:", error);
+        console.error('API call error:', error);
       }
     }
     callAPI();
   }, [category]);
 
   return (
-    <div className={styles.main}>
-      <div className={styles.filters}>
-        <Filter name={"낮은가격순"} onClick={() => setList([...list].sort((a, b) => a.price - b.price))} />
-        <Filter name={"높은가격순"} onClick={() => setList([...list].sort((a, b) => b.price - a.price))} />
+    <div css={mainStyle}>
+      <div css={filtersStyle}>
         <Filter
-          name={"할인율순"}
-          onClick={() => setList([...list].sort((a, b) => b.discountPercentage - a.discountPercentage))}
+          name={'낮은가격순'}
+          onClick={() => setList([...list].sort((a, b) => a.price - b.price))}
         />
-        <Filter name={"평점순"} onClick={() => setList([...list].sort((a, b) => b.rating - a.rating))} />
+        <Filter
+          name={'높은가격순'}
+          onClick={() => setList([...list].sort((a, b) => b.price - a.price))}
+        />
+        <Filter
+          name={'할인율순'}
+          onClick={() =>
+            setList(
+              [...list].sort(
+                (a, b) => b.discountPercentage - a.discountPercentage
+              )
+            )
+          }
+        />
+        <Filter
+          name={'평점순'}
+          onClick={() => setList([...list].sort((a, b) => b.rating - a.rating))}
+        />
       </div>
-      <ul className={styles.products}>
+      <ul css={productsStyle}>
         {[...list].map((el) => (
           <Card
             key={el.id}
@@ -65,9 +110,9 @@ interface FilterProps {
   name: string;
 }
 
-const Filter = ({ onClick, name }:FilterProps): React.ReactElement => {
+const Filter = ({ onClick, name }: FilterProps): React.ReactElement => {
   return (
-    <label className={styles.filter}>
+    <label css={filterStyle}>
       <input type="radio" name="filter" onClick={onClick}></input>
       <span>{name}</span>
     </label>

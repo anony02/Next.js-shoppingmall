@@ -1,41 +1,146 @@
-import { useRouter } from "next/router";
-import Link from "next/link";
-import styles from "./Login.module.css";
-import { useState } from "react";
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { useState } from 'react';
 
-export default function Login() :React.ReactElement {
+const loginStyle = css`
+  padding-top: 50px;
+  background-clip: content-box;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const logoStyle = css`
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+  margin-bottom: 40px;
+`;
+
+const wrapStyle = css`
+  background-color: rgb(240, 240, 240);
+  padding: 10px;
+`;
+
+const containerStyle = css`
+  display: flex;
+  height: 50px;
+  align-items: center;
+  & > * {
+    height: 30px;
+    margin-right: 10px;
+  }
+  & > div:first-child {
+    width: 100px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 30px;
+  }
+  & > div:last-child {
+    width: 200px;
+  }
+  & > input {
+    height: 30px;
+    margin: 10px 0;
+    width: 200px;
+    padding: 10px;
+  }
+  & > input::placeholder {
+    text-align: center;
+  }
+  & > button {
+    width: 300px;
+    margin-left: 10px;
+    background-color: rgb(100, 100, 100);
+    color: white;
+    font-weight: bold;
+  }
+  & > button:hover {
+    border: none;
+    background-color: rgba(100, 100, 100, 0const 5);
+  }
+`;
+
+const btnwrap = css`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+
+const btn = css`
+  width: 30px;
+  margin: 5px;
+  border-radius: 8px;
+  &:hover {
+    opacity: 0.5;
+  }
+`;
+
+const SVGRepoiconCarrier = css`
+  width: 30px;
+`;
+
+export default function Login(): React.ReactElement {
   const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
   const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
   const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-  const [id, setId] = useState<string>("");
-  const [pw, setPw] = useState<string>("");
+  const [id, setId] = useState<string>('');
+  const [pw, setPw] = useState<string>('');
   const router = useRouter();
   return (
-    <div className={styles.login}>
-      <Link className={styles.logo} href="/">
+    <div css={loginStyle}>
+      <Link css={logoStyle} href="/">
         Shopping mall
       </Link>
-      <div className={styles.wrap}>
-        <div className={styles.container}>
+      <div css={wrapStyle}>
+        <div css={containerStyle}>
           <div>아이디</div>
-          <input onChange={(e) => setId(e.target.value)} placeholder="아이디"></input>
+          <input
+            onChange={(e) => setId(e.target.value)}
+            placeholder="아이디"
+          ></input>
         </div>
-        <div className={styles.container}>
+        <div css={containerStyle}>
           <div>비밀번호</div>
-          <input type="password" onChange={(e) => setPw(e.target.value)} placeholder="비밀번호"></input>
+          <input
+            type="password"
+            onChange={(e) => setPw(e.target.value)}
+            placeholder="비밀번호"
+          ></input>
         </div>
-        <div className={styles.container}>
-          <button onClick={(e) => (pw.length < 6 ? alert("비밀번호는 6자리 이상입니다") : router.push("/"))}>
+        <div css={containerStyle}>
+          <button
+            onClick={(e) =>
+              pw.length < 6
+                ? alert('비밀번호는 6자리 이상입니다')
+                : router.push('/')
+            }
+          >
             로그인하기
           </button>
         </div>
-        <div className={styles.container}>
+        <div css={containerStyle}>
           <div>간편로그인</div>
-          <div className={styles.btnwrap}>
+          <div css={btnwrap}>
             <Link href={KAKAO_URL}>
-              <svg className={styles.btn} viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+              <svg
+                css={btn}
+                viewBox="0 0 256 256"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="#000000"
+              >
                 <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></g>
                 <g id="SVGRepo_iconCarrier">
                   <path
                     fill="#FFE812"
