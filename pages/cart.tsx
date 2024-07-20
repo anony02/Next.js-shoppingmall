@@ -1,8 +1,8 @@
-import Nav from "../components/Nav";
-import Footer from "../components/Footer";
-import Cart from "../page/Cart";
+import Nav from '../components/Nav';
+import Footer from '../components/Footer';
+import Cart from '../containers/Cart';
 
-const CartPage : React.FC = () => (
+const CartPage: React.FC = () => (
   <>
     <Nav />
     <Cart />

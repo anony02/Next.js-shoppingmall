@@ -1,8 +1,8 @@
-import Nav from "../components/Nav";
-import Footer from "../components/Footer";
-import Login from "../page/Login";
+import Nav from '../components/Nav';
+import Footer from '../components/Footer';
+import Login from '../containers/Login';
 
-const LoginPage : React.FC = () => (
+const LoginPage: React.FC = () => (
   <>
     <Nav />
     <Login />

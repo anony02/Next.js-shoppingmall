@@ -1,8 +1,8 @@
-import Nav from "../../components/Nav";
-import Footer from "../../components/Footer";
-import Kakao from "../../page/Kakao";
+import Nav from '../../components/Nav';
+import Footer from '../../components/Footer';
+import Kakao from '../../containers/Kakao';
 
-const KakaoPage : React.FC = () => (
+const KakaoPage: React.FC = () => (
   <>
     <Nav />
     <Kakao />
