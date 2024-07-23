@@ -3,6 +3,8 @@ import { AppProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '../utils/queryClient';
+import Nav from '../components/Nav';
+import Footer from '../components/Footer';
 
 const globalStyles = css`
   * {
@@ -41,7 +43,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <Global styles={globalStyles} />
+        <Nav />
         <Component {...pageProps} />
+        <Footer />
       </QueryClientProvider>
     </RecoilRoot>
   );
