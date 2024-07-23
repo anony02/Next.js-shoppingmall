@@ -1,83 +1,18 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Search from './Search';
-
-const nav = css`
-  height: 50px;
-  display: flex;
-  align-items: center;
-  position: fixed;
-  width: 100%;
-  background-color: rgb(240, 240, 240);
-  padding: 0 20px;
-  box-sizing: border-box;
-  z-index: 1;
-`;
-
-const leftwrap = css`
-  display: flex;
-  align-items: center;
-  margin-right: auto;
-  & > * {
-    margin: 0 5px;
-  }
-`;
-
-const rightwrap = css`
-  display: flex;
-  align-items: center;
-  & > * {
-    margin: 0 5px;
-  }
-`;
-
-const btnwrap = css`
-  display: flex;
-  align-items: center;
-`;
-
-const category = css`
-  position: relative;
-  display: flex;
-  &:hover .list {
-    visibility: visible;
-  }
-`;
-
-const btn = css`
-  width: 30px;
-`;
-
-const listStyle = css`
-  position: absolute;
-  visibility: hidden;
-  z-index: 1;
-  background-color: white;
-  border: 1px solid rgb(200, 200, 200);
-  padding: 10px;
-  font-size: 12px;
-  top: 100%;
-  line-height: 200%;
-  width: 130px;
-  white-space: pre-wrap;
-  & > a {
-    text-decoration: none;
-    color: black;
-    &:hover {
-      color: #0b57d0;
-      font-weight: 900;
-    }
-  }
-`;
-
-const logo = css`
-  font-weight: bold;
-  text-decoration: none;
-  color: black;
-`;
+import {
+  nav,
+  leftwrap,
+  rightwrap,
+  btnwrap,
+  category,
+  btn,
+  listStyle,
+  logo,
+} from '../styles/navStyles';
 
 type CategoryList = string[];
 

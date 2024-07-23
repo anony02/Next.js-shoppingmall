@@ -1,5 +1,3 @@
-import Nav from '../../components/Nav';
-import Footer from '../../components/Footer';
 import Detail from '../../containers/Detail';
 import { useRouter } from 'next/router';
 
@@ -9,13 +7,7 @@ const DetailPage: React.FC = () => {
 
   const idString = typeof id === 'string' ? id : '';
 
-  return (
-    <>
-      <Nav />
-      <Detail id={idString} />
-      <Footer />
-    </>
-  );
+  return <Detail id={idString} />;
 };
 
 export default DetailPage;

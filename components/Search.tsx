@@ -1,75 +1,19 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import {
+  searchbox,
+  searchicon,
+  searchinput,
+  dropdownStyle,
+} from '../styles/searchStyles';
 
 interface Product {
   id: number;
   title: string;
   [key: string]: any;
 }
-
-const searchbox = css`
-  display: flex;
-  align-items: center;
-  background-color: white;
-  height: 30px;
-  width: 250px;
-  border-radius: 10px;
-  padding: 0 10px;
-  position: relative;
-`;
-
-const searchicon = css`
-  height: 20px;
-  fill: black;
-  margin-right: 10px;
-`;
-
-const searchinput = css`
-  border: none;
-  padding: 0;
-  line-height: 20px;
-  outline: none;
-  width: 200px;
-
-  &::placeholder {
-    color: gray;
-  }
-`;
-
-const dropdown = css`
-  position: absolute;
-  z-index: 1;
-  width: 250px;
-  max-height: 500px;
-  padding: 0px 10px 6px;
-  top: 100%;
-  right: 0px;
-  overflow: auto;
-  border: 1px solid rgb(240, 240, 240);
-  background-color: white;
-  color: gray;
-  display: flex;
-  flex-direction: column;
-`;
-
-const linkStyle = css`
-  text-decoration: none;
-  margin-top: 6px;
-  font-size: 14px;
-  white-space: pre-wrap;
-  color: black;
-
-  &:hover {
-    background-color: lightgray;
-  }
-`;
-
-const selectedStyle = css`
-  background-color: lightgray;
-`;
 
 export default function Search(): React.ReactElement {
   const [list, setList] = useState<Product[]>([]);
@@ -141,12 +85,9 @@ export default function Search(): React.ReactElement {
           onKeyUp={onkeyup}
         />
         {exist && (
-          <div css={dropdown}>
+          <div css={dropdownStyle}>
             {dropdown.map((el, i) => (
               <Link
-                css={`
-                  ${linkStyle} ${idx === i ? 'selected' : ''}
-                `}
                 key={i}
                 onMouseOver={() => setIdx(i)}
                 onClick={() => {

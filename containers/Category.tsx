@@ -1,33 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Card from '../components/Card';
-
-const mainStyle = css`
-  padding: 50px;
-`;
-
-const filtersStyle = css`
-  height: 50px;
-  font-size: 10px;
-`;
-
-const filterStyle = css`
-  display: inline;
-  line-height: 50px;
-  font-size: 10px;
-  padding: 0 5px;
-  & > input {
-    display: none;
-  }
-`;
-
-const productsStyle = css`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 250px);
-  font-size: 10px;
-`;
+import Filter from '../components/Filter';
+import { mainStyle, filtersStyle, productsStyle } from '../styles/mainStyles';
 
 interface Product {
   id: number;
@@ -39,13 +15,11 @@ interface Product {
   stock: number;
 }
 
-interface CategoryProps {
-  category: string;
-}
-
 export default function Category({
   category,
-}: CategoryProps): React.ReactElement {
+}: {
+  category: string;
+}): React.ReactElement {
   const [list, setList] = useState<Product[]>([]);
   useEffect(() => {
     async function callAPI() {
@@ -104,17 +78,3 @@ export default function Category({
     </div>
   );
 }
-
-interface FilterProps {
-  onClick: () => void;
-  name: string;
-}
-
-const Filter = ({ onClick, name }: FilterProps): React.ReactElement => {
-  return (
-    <label css={filterStyle}>
-      <input type="radio" name="filter" onClick={onClick}></input>
-      <span>{name}</span>
-    </label>
-  );
-};
