@@ -708,6 +708,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.51.9":
+  version: 5.51.9
+  resolution: "@tanstack/query-core@npm:5.51.9"
+  checksum: 10c0/05ae00d0f4c80ea82991b7624551da543abbe8782b9b3910867d1d142076e2ac8892f50c37f2bde0bfa70ada3be1ad2f74472aece945a0237d2c86b729a02a1c
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.51.11":
+  version: 5.51.11
+  resolution: "@tanstack/react-query@npm:5.51.11"
+  dependencies:
+    "@tanstack/query-core": "npm:5.51.9"
+  peerDependencies:
+    react: ^18.0.0
+  checksum: 10c0/318aea36ffafc3e5123d970442c1358058137c069ef65dddcef87ea2406bc2f943f5e6da286df581885ba192b962b96eb785e57ef29366ee2178f18e39190f76
+  languageName: node
+  linkType: hard
+
 "@testing-library/dom@npm:^8.5.0":
   version: 8.20.1
   resolution: "@testing-library/dom@npm:8.20.1"
@@ -2542,6 +2560,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hamt_plus@npm:1.0.2":
+  version: 1.0.2
+  resolution: "hamt_plus@npm:1.0.2"
+  checksum: 10c0/c5aa5cc08228e8cc2a90150fef680bd5b09f16a327bdab799daeb80fd3c987663308b14e2c6718abdf75afce21d29607e35f2705eb336a14aa935c0ca5949ce7
+  languageName: node
+  linkType: hard
+
 "has-bigints@npm:^1.0.1, has-bigints@npm:^1.0.2":
   version: 1.0.2
   resolution: "has-bigints@npm:1.0.2"
@@ -3698,6 +3723,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"recoil@npm:^0.7.7":
+  version: 0.7.7
+  resolution: "recoil@npm:0.7.7"
+  dependencies:
+    hamt_plus: "npm:1.0.2"
+  peerDependencies:
+    react: ">=16.13.1"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: 10c0/630a73b0bdfb1b453c68eca9b3fa0771d489006fbd856a7700174d775978ba3faa10d251ac2af7c07142014dcba07c2b103f448ecc19b6124d3228ec810f5c28
+  languageName: node
+  linkType: hard
+
 "redent@npm:^3.0.0":
   version: 3.0.0
   resolution: "redent@npm:3.0.0"
@@ -3937,6 +3978,7 @@ __metadata:
     "@emotion/styled": "npm:^11.12.0"
     "@eslint/eslintrc": "npm:^3.1.0"
     "@eslint/js": "npm:^9.7.0"
+    "@tanstack/react-query": "npm:^5.51.11"
     "@testing-library/jest-dom": "npm:^5.17.0"
     "@testing-library/react": "npm:^13.4.0"
     "@testing-library/user-event": "npm:^13.5.0"
@@ -3956,6 +3998,7 @@ __metadata:
     next: "npm:^14.2.5"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
+    recoil: "npm:^0.7.7"
     typescript: "npm:^5.5.3"
     web-vitals: "npm:^2.1.4"
   languageName: unknown

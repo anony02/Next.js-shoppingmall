@@ -1,5 +1,8 @@
 import { Global, css } from '@emotion/react';
 import { AppProps } from 'next/app';
+import { RecoilRoot } from 'recoil';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '../utils/queryClient';
 
 const globalStyles = css`
   * {
@@ -35,10 +38,12 @@ const globalStyles = css`
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
-      <Global styles={globalStyles} />
-      <Component {...pageProps} />
-    </>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <Global styles={globalStyles} />
+        <Component {...pageProps} />
+      </QueryClientProvider>
+    </RecoilRoot>
   );
 }
 

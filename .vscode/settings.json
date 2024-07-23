@@ -1,0 +1,48 @@
+{
+  "editor.tabSize": 2, // 탭 크기 설정
+  "editor.insertSpaces": false, // 탭 대신 공백 사용
+  "editor.wordWrap": "on", // 자동 줄 바꿈
+  "files.autoSave": "onWindowChange", // 자동 저장 (지연 후)
+  "files.autoSaveDelay": 1000, // 자동 저장 지연 시간 (밀리초)
+  "files.exclude": {
+    // 파일/폴더 제외
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.next": true, // Next.js 빌드 폴더 제외
+    "**/out": true // Next.js export 폴더 제외
+  },
+  "editor.formatOnSave": true, // 저장 시 자동 포맷팅
+  "eslint.enable": true, // ESLint 활성화
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ],
+  "prettier.requireConfig": true, // Prettier 설정 파일 필요
+  "prettier.singleQuote": true, // 작은 따옴표 사용
+  "prettier.semi": true, // 항상 세미콜론 붙이기
+  "eslint.options": {
+    "extensions": [".js", ".jsx", ".ts", ".tsx"]
+  },
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "json.schemas": [],
+  "search.exclude": {
+    "**/.yarn": true,
+    "**/.pnp.*": true
+  },
+  "eslint.nodePath": ".yarn/sdks",
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
+}
