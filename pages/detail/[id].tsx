@@ -5,9 +5,9 @@ const DetailPage: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const idString = typeof id === 'string' ? id : '';
+  const idNum = Number(id);
 
-  return <Detail id={idString} />;
+  return <Detail id={idNum} />;
 };
 
 export default DetailPage;

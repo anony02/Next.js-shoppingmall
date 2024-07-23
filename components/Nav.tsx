@@ -1,8 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { useQuery } from '@tanstack/react-query';
 import Search from './Search';
+import { categoryListState } from '../recoil/atoms';
+import { fetchCategories } from '../utils/api';
 import {
   nav,
   leftwrap,
@@ -14,23 +17,22 @@ import {
   logo,
 } from '../styles/navStyles';
 
-type CategoryList = string[];
-
 export default function Nav(): React.ReactElement {
-  const [list, setList] = useState<CategoryList>([]);
+  const setCategoryList = useSetRecoilState(categoryListState);
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['categories'],
+    queryFn: fetchCategories,
+  });
+
   useEffect(() => {
-    async function callAPI() {
-      try {
-        const response = await axios.get<CategoryList>(
-          'https://dummyjson.com/products/category-list'
-        );
-        setList(response.data);
-      } catch (error) {
-        console.error('API call error:', error);
-      }
+    if (data) {
+      setCategoryList(data);
     }
-    callAPI();
-  }, []);
+  }, [data, setCategoryList]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading categories</div>;
+
   return (
     <nav css={nav}>
       <div css={leftwrap}>
@@ -70,7 +72,7 @@ export default function Nav(): React.ReactElement {
             </g>
           </svg>
           <div css={listStyle} className="list">
-            {list.map((category) => (
+            {data?.map((category: string) => (
               <Link key={category} href={`/${category}`}>
                 {category + '\n'}
               </Link>

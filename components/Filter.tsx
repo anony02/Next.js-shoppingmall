@@ -1,15 +1,19 @@
 /** @jsxImportSource @emotion/react */
+import { useSetRecoilState } from 'recoil';
+import { filterState } from '../recoil/atoms';
 import { filterStyles } from '../styles/filterStyles';
 
 interface FilterProps {
-  onClick: () => void;
+  filterName: string;
   name: string;
 }
 
-const Filter = ({ onClick, name }: FilterProps): React.ReactElement => {
+const Filter = ({ filterName, name }: FilterProps): React.ReactElement => {
+  const setFilter = useSetRecoilState(filterState);
+
   return (
     <label css={filterStyles}>
-      <input type="radio" name="filter" onClick={onClick}></input>
+      <input type="radio" name="filter" onClick={() => setFilter(filterName)} />
       <span>{name}</span>
     </label>
   );
