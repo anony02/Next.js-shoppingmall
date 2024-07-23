@@ -1,8 +1,16 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import Link from 'next/link';
+import { useRecoilState } from 'recoil';
+import { useQuery } from '@tanstack/react-query';
+import { searchInputState, searchDropdownState } from '../recoil/atoms';
+import { fetchProducts } from '../utils/api';
+import {
+  searchbox,
+  searchicon,
+  searchinput,
+  dropdownStyle,
+} from '../styles/searchStyles';
 
 interface Product {
   id: number;
@@ -10,98 +18,33 @@ interface Product {
   [key: string]: any;
 }
 
-const searchbox = css`
-  display: flex;
-  align-items: center;
-  background-color: white;
-  height: 30px;
-  width: 250px;
-  border-radius: 10px;
-  padding: 0 10px;
-  position: relative;
-`;
-
-const searchicon = css`
-  height: 20px;
-  fill: black;
-  margin-right: 10px;
-`;
-
-const searchinput = css`
-  border: none;
-  padding: 0;
-  line-height: 20px;
-  outline: none;
-  width: 200px;
-
-  &::placeholder {
-    color: gray;
-  }
-`;
-
-const dropdown = css`
-  position: absolute;
-  z-index: 1;
-  width: 250px;
-  max-height: 500px;
-  padding: 0px 10px 6px;
-  top: 100%;
-  right: 0px;
-  overflow: auto;
-  border: 1px solid rgb(240, 240, 240);
-  background-color: white;
-  color: gray;
-  display: flex;
-  flex-direction: column;
-`;
-
-const linkStyle = css`
-  text-decoration: none;
-  margin-top: 6px;
-  font-size: 14px;
-  white-space: pre-wrap;
-  color: black;
-
-  &:hover {
-    background-color: lightgray;
-  }
-`;
-
-const selectedStyle = css`
-  background-color: lightgray;
-`;
-
 export default function Search(): React.ReactElement {
-  const [list, setList] = useState<Product[]>([]);
-  useEffect(() => {
-    const callAPI = async () => {
-      try {
-        const res = await axios.get('https://dummyjson.com/products?limit=0');
-        setList(res.data.products);
-      } catch (error) {
-        console.error('API 호출 에러:', error);
-      }
-    };
+  const [input, setInput] = useRecoilState(searchInputState);
+  const [dropdown, setDropdown] = useRecoilState(searchDropdownState);
+  const [idx, setIdx] = useState<number>(-1);
 
-    callAPI();
-  }, []);
+  const {
+    data: list = [],
+    error,
+    isLoading,
+  } = useQuery<Product[]>({
+    queryKey: ['products'],
+    queryFn: fetchProducts,
+  });
 
   const title = list.map((x) => x.title);
   const id = list.map((x) => x.id);
   const findid = (x: string) => id[title.indexOf(x)];
-  const [input, setInput] = useState<string>('');
-  const [exist, setExist] = useState<boolean>(false);
-  const [dropdown, setDropdown] = useState<string[]>([]);
-  const [idx, setIdx] = useState<number>(-1);
   const onchange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
-    setExist(true);
   };
+
   const onclick = (e: string) => {
     setInput(e);
   };
+
   const onkeyup = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!exist) return;
+    if (dropdown.length === 0) return;
     if (e.key === 'ArrowDown' && dropdown.length > idx + 1) {
       setIdx(idx + 1);
     } else if (e.key === 'ArrowUp' && idx >= 0) {
@@ -111,9 +54,9 @@ export default function Search(): React.ReactElement {
       setIdx(-1);
     }
   };
+
   useEffect(() => {
     if (input === '') {
-      setExist(false);
       setDropdown([]);
     } else {
       setDropdown(
@@ -140,18 +83,15 @@ export default function Search(): React.ReactElement {
           onChange={onchange}
           onKeyUp={onkeyup}
         />
-        {exist && (
-          <div css={dropdown}>
+        {dropdown.length > 0 && (
+          <div css={dropdownStyle}>
             {dropdown.map((el, i) => (
               <Link
-                css={`
-                  ${linkStyle} ${idx === i ? 'selected' : ''}
-                `}
                 key={i}
                 onMouseOver={() => setIdx(i)}
                 onClick={() => {
                   setInput(el);
-                  setExist(false);
+                  setDropdown([]);
                 }}
                 href={`/detail/${findid(el)}`}
               >

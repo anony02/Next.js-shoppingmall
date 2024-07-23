@@ -1,101 +1,38 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { useQuery } from '@tanstack/react-query';
 import Search from './Search';
-
-const nav = css`
-  height: 50px;
-  display: flex;
-  align-items: center;
-  position: fixed;
-  width: 100%;
-  background-color: rgb(240, 240, 240);
-  padding: 0 20px;
-  box-sizing: border-box;
-  z-index: 1;
-`;
-
-const leftwrap = css`
-  display: flex;
-  align-items: center;
-  margin-right: auto;
-  & > * {
-    margin: 0 5px;
-  }
-`;
-
-const rightwrap = css`
-  display: flex;
-  align-items: center;
-  & > * {
-    margin: 0 5px;
-  }
-`;
-
-const btnwrap = css`
-  display: flex;
-  align-items: center;
-`;
-
-const category = css`
-  position: relative;
-  display: flex;
-  &:hover .list {
-    visibility: visible;
-  }
-`;
-
-const btn = css`
-  width: 30px;
-`;
-
-const listStyle = css`
-  position: absolute;
-  visibility: hidden;
-  z-index: 1;
-  background-color: white;
-  border: 1px solid rgb(200, 200, 200);
-  padding: 10px;
-  font-size: 12px;
-  top: 100%;
-  line-height: 200%;
-  width: 130px;
-  white-space: pre-wrap;
-  & > a {
-    text-decoration: none;
-    color: black;
-    &:hover {
-      color: #0b57d0;
-      font-weight: 900;
-    }
-  }
-`;
-
-const logo = css`
-  font-weight: bold;
-  text-decoration: none;
-  color: black;
-`;
-
-type CategoryList = string[];
+import { categoryListState } from '../recoil/atoms';
+import { fetchCategories } from '../utils/api';
+import {
+  nav,
+  leftwrap,
+  rightwrap,
+  btnwrap,
+  category,
+  btn,
+  listStyle,
+  logo,
+} from '../styles/navStyles';
 
 export default function Nav(): React.ReactElement {
-  const [list, setList] = useState<CategoryList>([]);
+  const setCategoryList = useSetRecoilState(categoryListState);
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['categories'],
+    queryFn: fetchCategories,
+  });
+
   useEffect(() => {
-    async function callAPI() {
-      try {
-        const response = await axios.get<CategoryList>(
-          'https://dummyjson.com/products/category-list'
-        );
-        setList(response.data);
-      } catch (error) {
-        console.error('API call error:', error);
-      }
+    if (data) {
+      setCategoryList(data);
     }
-    callAPI();
-  }, []);
+  }, [data, setCategoryList]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading categories</div>;
+
   return (
     <nav css={nav}>
       <div css={leftwrap}>
@@ -135,7 +72,7 @@ export default function Nav(): React.ReactElement {
             </g>
           </svg>
           <div css={listStyle} className="list">
-            {list.map((category) => (
+            {data?.map((category: string) => (
               <Link key={category} href={`/${category}`}>
                 {category + '\n'}
               </Link>

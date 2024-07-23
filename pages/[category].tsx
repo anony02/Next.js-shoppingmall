@@ -1,5 +1,3 @@
-import Nav from '../components/Nav';
-import Footer from '../components/Footer';
 import Category from '../containers/Category';
 import { useRouter } from 'next/router';
 
@@ -9,13 +7,7 @@ const CategoryPage: React.FC = () => {
 
   const categoryString = typeof category === 'string' ? category : '';
 
-  return (
-    <>
-      <Nav />
-      <Category category={categoryString} />
-      <Footer />
-    </>
-  );
+  return <Category category={categoryString} />;
 };
 
 export default CategoryPage;

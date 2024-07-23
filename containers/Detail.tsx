@@ -1,154 +1,82 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { useQuery } from '@tanstack/react-query';
+import { cartState } from '../recoil/atoms';
+import { fetchProduct } from '../utils/api';
+import {
+  detailStyle,
+  imgStyle,
+  infoStyle,
+  titleStyle,
+  discountStyle,
+  priceStyle,
+  soldoutStyle,
+  selectStyle,
+  selectboxStyle,
+} from '../styles/detailStyles';
 
-const detailStyle = css`
-  padding: 80px 50px;
-  background-clip: content-box;
-  display: flex;
-`;
-
-const imgStyle = css`
-  width: 500px;
-  height: 500px;
-  object-fit: contain;
-  border: 1px solid rgb(230, 230, 230);
-`;
-
-const infoStyle = css`
-  width: 500px;
-  height: 500px;
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
-  font-size: 16px;
-  & > * {
-    padding: 10px 0;
-  }
-  & > button {
-    margin-top: 10px;
-  }
-`;
-
-const titleStyle = css`
-  font-weight: bold;
-  font-size: 28px;
-  border-bottom: 2px solid rgb(220, 220, 220);
-`;
-
-const discountStyle = css`
-  color: red;
-  font-weight: bold;
-  font-size: 20px;
-  margin-right: 8px;
-`;
-
-const priceStyle = css`
-  font-weight: bold;
-  font-size: 24px;
-`;
-
-const soldoutStyle = css`
-  color: red;
-  font-weight: bold;
-  margin-left: 5px;
-`;
-
-const selectStyle = css`
-  display: flex;
-  line-height: 30px;
-  border-bottom: 2px solid rgb(220, 220, 220);
-  & > div {
-    width: 120px;
-    text-align: end;
-  }
-`;
-
-const selectboxStyle = css`
-  width: 120px;
-  height: 30px;
-  display: flex;
-  align-content: center;
-  margin-right: 60px;
-  & > button {
-    border-collapse: collapse;
-    line-height: 30px;
-    width: 30px;
-    height: 30px;
-    font-size: 16px;
-    padding: 0;
-  }
-  & > input {
-    border: 1px solid rgb(230, 230, 230);
-    padding: 0;
-    width: 60px;
-    height: 30px;
-    text-align: center;
-    font-size: 16px;
-  }
-`;
-
-interface Product {
-  id: number;
-  thumbnail: string;
-  title: string;
-  description: string;
-  discountPercentage: number;
-  price: number;
-  rating: number;
-  stock: number;
-}
-
-interface DetailProps {
-  id: string;
-}
-
-export default function Detail({ id }: DetailProps): React.ReactElement {
-  const [list, setList] = useState<Product | null>(null);
+export default function Detail({ id }: { id: number }): React.ReactElement {
   const [count, setCount] = useState<number>(0);
-  useEffect(() => {
-    async function callAPI() {
-      await axios(`https://dummyjson.com/products/${id}`).then((res) => {
-        setList(res.data);
-      });
-    }
-    callAPI();
-  }, [id]);
+  const [cart, setCart] = useRecoilState(cartState);
 
-  if (!list) {
-    return <div>Loading...</div>;
-  }
+  const {
+    data: product,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ['product', id],
+    queryFn: () => fetchProduct(id),
+    // `enabled` 속성을 사용하여 id가 있을 때만 쿼리를 실행
+    enabled: !!id,
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Something went wrong!</div>;
+
+  if (!product) return <div>Product not found</div>;
+
+  const handleAddToCart = () => {
+    const updatedCart = { ...cart, [product.id]: count };
+    setCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    alert('장바구니에 상품이 추가되었습니다.');
+  };
 
   return (
     <div css={detailStyle}>
-      <img css={imgStyle} src={list.thumbnail} alt="" />
+      <img css={imgStyle} src={product.thumbnail} alt={product.title} />
       <div css={infoStyle}>
-        <div css={titleStyle}>{list.title}</div>
-        <div>{list.description}</div>
-        <div>평점 : {list.rating}/5점</div>
+        <div css={titleStyle}>{product.title}</div>
+        <div>{product.description}</div>
+        <div>평점 : {product.rating}/5점</div>
         <div>
-          {Math.round(list.discountPercentage) !== 0 && (
+          {Math.round(product.discountPercentage) !== 0 && (
             <span css={discountStyle}>
-              {Math.round(list.discountPercentage)}%
+              {Math.round(product.discountPercentage)}%
             </span>
           )}
           <span css={priceStyle}>
-            {Math.round(list.price * 1350).toLocaleString('ko-KR')}원
+            {Math.round(product.price * 1350).toLocaleString('ko-KR')}원
           </span>
         </div>
         <div>
-          <span>(남은수량 : {list.stock})</span>
-          <span css={soldoutStyle}>{list.stock < 10 ? '(매진임박)' : ''}</span>
+          <span>(남은수량 : {product.stock})</span>
+          <span css={soldoutStyle}>
+            {product.stock < 10 ? '(매진임박)' : ''}
+          </span>
         </div>
         <div css={selectStyle}>
           <div css={selectboxStyle}>
             <button
-              onClick={() => setCount(count === 0 ? list.stock : (x) => x - 1)}
+              onClick={() =>
+                setCount((prevCount) => (prevCount === 0 ? 0 : prevCount - 1))
+              }
             >
               -
             </button>
             <input
+              type="number"
               value={count}
               onChange={(e) => {
                 const value = parseInt(e.target.value);
@@ -156,39 +84,28 @@ export default function Detail({ id }: DetailProps): React.ReactElement {
                   alert('숫자를 입력해주세요');
                   return;
                 }
-                if (value > list.stock) {
+                if (value > product.stock) {
                   alert('남은 수량을 확인해주세요');
                   return;
                 }
                 setCount(value);
               }}
-            ></input>
+            />
             <button
-              onClick={() => setCount(count === list.stock ? 0 : (x) => x + 1)}
+              onClick={() =>
+                setCount((prevCount) =>
+                  prevCount === product.stock ? product.stock : prevCount + 1
+                )
+              }
             >
               +
             </button>
           </div>
           <div>
-            {Math.round(count * list.price * 1350).toLocaleString('ko-KR')}원
+            {Math.round(count * product.price * 1350).toLocaleString('ko-KR')}원
           </div>
         </div>
-        <button
-          onClick={() => {
-            const cart = localStorage.getItem('cart');
-            let obj;
-            if (cart === null) {
-              obj = { [list.id]: count };
-            } else {
-              obj = JSON.parse(cart);
-              obj[list.id] = count;
-            }
-            localStorage.setItem('cart', JSON.stringify(obj));
-            alert('장바구니에 상품이 추가되었습니다.');
-          }}
-        >
-          장바구니 담기
-        </button>
+        <button onClick={handleAddToCart}>장바구니 담기</button>
       </div>
     </div>
   );

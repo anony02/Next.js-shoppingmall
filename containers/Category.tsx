@@ -1,94 +1,59 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { useQuery } from '@tanstack/react-query';
+import { fetchCategoryProducts } from '../utils/api';
+import { productListState, filterState } from '../recoil/atoms';
 import Card from '../components/Card';
-
-const mainStyle = css`
-  padding: 50px;
-`;
-
-const filtersStyle = css`
-  height: 50px;
-  font-size: 10px;
-`;
-
-const filterStyle = css`
-  display: inline;
-  line-height: 50px;
-  font-size: 10px;
-  padding: 0 5px;
-  & > input {
-    display: none;
-  }
-`;
-
-const productsStyle = css`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 250px);
-  font-size: 10px;
-`;
-
-interface Product {
-  id: number;
-  thumbnail: string;
-  title: string;
-  discountPercentage: number;
-  price: number;
-  rating: number;
-  stock: number;
-}
-
-interface CategoryProps {
-  category: string;
-}
+import Filter from '../components/Filter';
+import { mainStyle, filtersStyle, productsStyle } from '../styles/mainStyles';
 
 export default function Category({
   category,
-}: CategoryProps): React.ReactElement {
-  const [list, setList] = useState<Product[]>([]);
+}: {
+  category: string;
+}): React.ReactElement {
+  const [list, setList] = useRecoilState(productListState);
+  const filter = useRecoilValue(filterState);
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['categoryProducts', category],
+    queryFn: () => fetchCategoryProducts(category),
+  });
+
   useEffect(() => {
-    async function callAPI() {
-      try {
-        const res = await axios.get(
-          `https://dummyjson.com/products/category/${category}`
-        );
-        setList(res.data.products);
-      } catch (error) {
-        console.error('API call error:', error);
-      }
+    if (data) {
+      setList(data);
     }
-    callAPI();
-  }, [category]);
+  }, [data, setList]);
+
+  const filteredList = () => {
+    let sortedList = [...list];
+    if (filter === '낮은가격순') {
+      sortedList.sort((a, b) => a.price - b.price);
+    } else if (filter === '높은가격순') {
+      sortedList.sort((a, b) => b.price - a.price);
+    } else if (filter === '할인율순') {
+      sortedList.sort((a, b) => b.discountPercentage - a.discountPercentage);
+    } else if (filter === '평점순') {
+      sortedList.sort((a, b) => b.rating - a.rating);
+    }
+    return sortedList;
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading data</div>;
 
   return (
-    <div css={mainStyle}>
+    <main css={mainStyle}>
       <div css={filtersStyle}>
-        <Filter
-          name={'낮은가격순'}
-          onClick={() => setList([...list].sort((a, b) => a.price - b.price))}
-        />
-        <Filter
-          name={'높은가격순'}
-          onClick={() => setList([...list].sort((a, b) => b.price - a.price))}
-        />
-        <Filter
-          name={'할인율순'}
-          onClick={() =>
-            setList(
-              [...list].sort(
-                (a, b) => b.discountPercentage - a.discountPercentage
-              )
-            )
-          }
-        />
-        <Filter
-          name={'평점순'}
-          onClick={() => setList([...list].sort((a, b) => b.rating - a.rating))}
-        />
+        <Filter name="낮은가격순" filterName="낮은가격순" />
+        <Filter name="높은가격순" filterName="높은가격순" />
+        <Filter name="할인율순" filterName="할인율순" />
+        <Filter name="평점순" filterName="평점순" />
       </div>
       <ul css={productsStyle}>
-        {[...list].map((el) => (
+        {filteredList().map((el) => (
           <Card
             key={el.id}
             id={el.id}
@@ -101,20 +66,6 @@ export default function Category({
           />
         ))}
       </ul>
-    </div>
+    </main>
   );
 }
-
-interface FilterProps {
-  onClick: () => void;
-  name: string;
-}
-
-const Filter = ({ onClick, name }: FilterProps): React.ReactElement => {
-  return (
-    <label css={filterStyle}>
-      <input type="radio" name="filter" onClick={onClick}></input>
-      <span>{name}</span>
-    </label>
-  );
-};

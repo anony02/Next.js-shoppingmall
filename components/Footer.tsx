@@ -1,50 +1,13 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
 import Link from 'next/link';
-
-const footer = css`
-  display: flex;
-  padding: 0 20px;
-  background-color: rgba(240, 240, 240);
-  justify-content: center;
-  align-items: center;
-`;
-
-const container = css`
-  height: 200px;
-  width: 300px;
-  font-size: 12px;
-  padding: 50px;
-
-  & > div {
-    width: 200px;
-  }
-`;
-
-const title = css`
-  font-weight: bold;
-  font-size: 14px;
-`;
-
-const cs = css`
-  font-size: 24px;
-  font-weight: bold;
-`;
-
-const btnwrap = css`
-  display: flex;
-  align-items: flex-end;
-`;
-
-const btn = css`
-  height: 30px;
-  margin: 5px;
-  border-radius: 8px;
-
-  &:hover {
-    opacity: 0.5;
-  }
-`;
+import {
+  footer,
+  container,
+  title,
+  cs,
+  btnwrap,
+  btn,
+} from '../styles/footerStyles';
 
 export default function Footer() {
   return (

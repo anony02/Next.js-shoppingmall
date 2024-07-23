@@ -1,105 +1,18 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
 import { useState } from 'react';
-
-const cartitem = css`
-  background-clip: content-box;
-  display: flex;
-  padding: 10px;
-  border-top: 2px solid rgb(220, 220, 220);
-  border-bottom: 2px solid rgb(220, 220, 220);
-  font-size: 12px;
-  margin-bottom: 5px;
-`;
-
-const img = css`
-  width: 200px;
-  height: 200px;
-  object-fit: contain;
-  border: 1px solid rgb(230, 230, 230);
-`;
-
-const info = css`
-  width: 200px;
-  height: 200px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  & > * {
-    padding: 10px 0;
-    text-align: start;
-  }
-  & > button {
-    margin-top: 10px;
-  }
-`;
-
-const title = css`
-  font-weight: bold;
-  font-size: 14px;
-`;
-
-const discount = css`
-  color: red;
-  font-weight: bold;
-  margin-right: 8px;
-`;
-
-const price = css`
-  font-weight: bold;
-  font-size: 14px;
-`;
-
-const soldout = css`
-  color: red;
-  font-weight: bold;
-  margin-left: 5px;
-`;
-
-const btnwrap = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: end;
-`;
-
-const deleteStyle = css`
-  line-height: 30px;
-  width: 30px;
-  height: 30px;
-`;
-
-const select = css`
-  display: flex;
-  line-height: 30px;
-  align-items: end;
-  & > div {
-    width: 120px;
-    text-align: end;
-    font-weight: bold;
-  }
-`;
-
-const selectbox = css`
-  width: 120px;
-  height: 30px;
-  display: flex;
-  align-content: center;
-  & > button {
-    border-collapse: collapse;
-    line-height: 30px;
-    width: 30px;
-    height: 30px;
-  }
-  & > input {
-    border: 1px solid rgb(230, 230, 230);
-    padding: 0;
-    width: 60px;
-    height: 30px;
-    text-align: center;
-    font-size: 14px;
-  }
-`;
+import {
+  cartitem,
+  img,
+  info,
+  title,
+  discount,
+  price,
+  soldout,
+  btnwrap,
+  deleteStyle,
+  select,
+  selectbox,
+} from '../styles/cartitemStyles';
 
 interface Product {
   title: string;

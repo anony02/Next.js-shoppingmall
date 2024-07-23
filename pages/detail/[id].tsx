@@ -1,5 +1,3 @@
-import Nav from '../../components/Nav';
-import Footer from '../../components/Footer';
 import Detail from '../../containers/Detail';
 import { useRouter } from 'next/router';
 
@@ -7,15 +5,9 @@ const DetailPage: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const idString = typeof id === 'string' ? id : '';
+  const idNum = Number(id);
 
-  return (
-    <>
-      <Nav />
-      <Detail id={idString} />
-      <Footer />
-    </>
-  );
+  return <Detail id={idNum} />;
 };
 
 export default DetailPage;
