@@ -3,7 +3,7 @@ import { useSetRecoilState } from 'recoil';
 import { filterState } from '../recoil/atoms';
 import { filterStyles } from '../styles/filterStyles';
 
-interface FilterProps {
+export interface FilterProps {
   filterName: string;
   name: string;
 }
