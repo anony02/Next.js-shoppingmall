@@ -52,6 +52,9 @@ export const buttonStyle = css`
   &:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+    &:hover {
+      opacity: 1;
+    }
   }
 `;
 

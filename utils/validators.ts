@@ -1,3 +1,10 @@
+export const validateEmail = (email: string): string => {
+  if (email && !/^[^\s@]{1,64}@[^\s@]{1,253}\.[^\s@]{2,63}$/.test(email)) {
+    return '유효한 이메일 주소를 입력해 주세요.';
+  }
+  return '';
+};
+
 export const validateUsername = (username: string): string => {
   if (username && !/^[a-zA-Z0-9]{4,12}$/.test(username)) {
     return '아이디는 4~12글자, 영문자와 숫자만 사용할 수 있습니다.';

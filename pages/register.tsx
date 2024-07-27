@@ -8,8 +8,13 @@ import {
   inputWrapperStyle,
   LogoStyle,
 } from '../styles/registerStyles';
-import { checkUserExists, registerUser } from '../utils/api';
 import {
+  checkEmailExists,
+  checkUsernameExists,
+  registerUser,
+} from '../utils/api';
+import {
+  validateEmail,
   validateUsername,
   validatePassword,
   validateConfirmPassword,
@@ -18,9 +23,11 @@ import Logo from '../components/Logo';
 import InputField from '../components/InputField';
 
 const Register: React.FC = () => {
+  const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [usernameError, setUsernameError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
@@ -28,14 +35,28 @@ const Register: React.FC = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const checkUserExistsMutation = useMutation({
-    mutationFn: checkUserExists,
+  const checkEmailExistsMutation = useMutation({
+    mutationFn: checkEmailExists,
     onSuccess: (exists) => {
       if (exists) {
-        alert('이미 가입한 회원입니다.');
+        alert('이미 가입된 이메일입니다.');
       } else {
-        mutation.mutate({ username, password });
-        useRouter;
+        checkUsernameExistsMutation.mutate(username);
+      }
+    },
+    onError: () => {
+      setEmailError('회원가입 중 오류가 발생했습니다.');
+    },
+  });
+
+  const checkUsernameExistsMutation = useMutation({
+    mutationFn: checkUsernameExists,
+    onSuccess: (exists) => {
+      if (exists) {
+        alert('이미 존재하는 아이디입니다.');
+      } else {
+        registerUserMutation.mutate({ email, username, password });
+        router.push('/login');
       }
     },
     onError: () => {
@@ -43,13 +64,13 @@ const Register: React.FC = () => {
     },
   });
 
-  const mutation = useMutation({
+  const registerUserMutation = useMutation({
     mutationFn: registerUser,
     onSuccess: (data) => {
       alert('회원가입이 완료되었습니다.');
       console.log(data);
       queryClient.invalidateQueries({
-        queryKey: ['checkUserExists', username],
+        queryKey: ['checkUsernameExists', username],
       });
       router.push('/login');
     },
@@ -59,14 +80,15 @@ const Register: React.FC = () => {
   });
 
   useEffect(() => {
+    setEmailError(validateEmail(email));
     setUsernameError(validateUsername(username));
     setPasswordError(validatePassword(password));
     setConfirmPasswordError(validateConfirmPassword(password, confirmPassword));
-  }, [username, password, confirmPassword]);
+  }, [email, username, password, confirmPassword]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    checkUserExistsMutation.mutate(username);
+    checkEmailExistsMutation.mutate(email);
   };
 
   return (
@@ -74,6 +96,13 @@ const Register: React.FC = () => {
       <div css={inputWrapperStyle}>
         <Logo customCss={LogoStyle} />
       </div>
+      <InputField
+        label="이메일"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        error={emailError}
+      />
       <InputField
         label="아이디"
         type="text"
@@ -98,7 +127,15 @@ const Register: React.FC = () => {
       <button
         css={buttonStyle}
         type="submit"
-        disabled={!!(usernameError || passwordError || confirmPasswordError)}
+        disabled={
+          !(email || username || password || confirmPassword) ||
+          !!(
+            emailError ||
+            usernameError ||
+            passwordError ||
+            confirmPasswordError
+          )
+        }
       >
         회원가입하기
       </button>

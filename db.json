@@ -1,19 +1,10 @@
 {
   "users": [
     {
-      "id": "0b74",
+      "id": "e1e2",
+      "email": "a@a.aa",
       "username": "id1234",
-      "password": "qwer123!"
-    },
-    {
-      "id": "2ca5",
-      "username": "id12345",
-      "password": "qwer12345!"
-    },
-    {
-      "id": "f7df",
-      "username": "id1111",
-      "password": "qwer1111!"
+      "password": "qwer1234!"
     }
   ]
 }

@@ -37,18 +37,29 @@ const apiClient = axios.create({
   },
 });
 
-export const checkUserExists = async (username: string) => {
+export const checkEmailExists = async (email: string) => {
+  const response = await apiClient.get(`/users?email=${email}`);
+  return response.data.length > 0;
+};
+
+export const checkUsernameExists = async (username: string) => {
   const response = await apiClient.get(`/users?username=${username}`);
   return response.data.length > 0;
 };
 
 export const registerUser = async ({
+  email,
   username,
   password,
 }: {
+  email: string;
   username: string;
   password: string;
 }) => {
-  const response = await apiClient.post('/users', { username, password });
+  const response = await apiClient.post('/users', {
+    email,
+    username,
+    password,
+  });
   return response.data;
 };
