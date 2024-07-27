@@ -7,7 +7,6 @@ import {
   logoStyle,
   wrapStyle,
   containerStyle,
-  LinkContainerStyle,
   linkStyle,
   btnwrap,
   btn,

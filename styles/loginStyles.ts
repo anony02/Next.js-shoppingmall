@@ -62,12 +62,6 @@ export const containerStyle = css`
   }
 `;
 
-export const LinkContainerStyle = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 export const linkStyle = css`
   padding: 0 10px;
   text-decoration: none;

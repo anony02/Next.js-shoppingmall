@@ -1,50 +1,46 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
 import { useState } from 'react';
-
-const formStyle = css`
-  display: flex;
-  flex-direction: column;
-  max-width: 300px;
-  margin: auto;
-`;
-
-const inputStyle = css`
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  font-size: 1rem;
-`;
-
-const buttonStyle = css`
-  padding: 0.5rem;
-  font-size: 1rem;
-  background-color: #0070f3;
-  color: white;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #005bb5;
-  }
-`;
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { formStyle, inputStyle, buttonStyle } from '../styles/registerStyles';
+import { checkUserExists, registerUser } from '../utils/api';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const { data: existingUsers, refetch } = useQuery({
+    queryKey: ['checkUserExists', username],
+    queryFn: () => checkUserExists(username),
+    enabled: false,
+  });
+
+  const mutation = useMutation({
+    mutationFn: registerUser,
+    onSuccess: (data) => {
+      alert('회원가입이 완료되었습니다.');
+      console.log(data);
+    },
+    onError: (error: any) => {
+      alert(error.response?.data?.message || '회원가입에 실패했습니다.');
+    },
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      alert('패스워드가 일치하지 않습니다.');
+      return;
+    }
 
-    const response = await fetch('/api/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    await refetch();
 
-    const data = await response.json();
-    alert(data.message);
+    if (existingUsers && existingUsers.length > 0) {
+      alert('이미 가입한 회원입니다.');
+      return;
+    }
+
+    mutation.mutate({ username, password });
   };
 
   return (
@@ -52,16 +48,23 @@ const Register = () => {
       <input
         css={inputStyle}
         type="text"
-        placeholder="Username"
+        placeholder="아이디"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
       <input
         css={inputStyle}
         type="password"
-        placeholder="Password"
+        placeholder="비밀번호"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+      />
+      <input
+        css={inputStyle}
+        type="password"
+        placeholder="비밀번호확인"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
       />
       <button css={buttonStyle} type="submit">
         회원가입하기

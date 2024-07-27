@@ -29,3 +29,26 @@ export const fetchProduct = async (id: number) => {
   const { data } = await axios.get(`https://dummyjson.com/products/${id}`);
   return data;
 };
+
+const apiClient = axios.create({
+  baseURL: 'http://localhost:3001',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+export const checkUserExists = async (username: string) => {
+  const response = await apiClient.get(`/users?username=${username}`);
+  return response.data;
+};
+
+export const registerUser = async ({
+  username,
+  password,
+}: {
+  username: string;
+  password: string;
+}) => {
+  const response = await apiClient.post('/users', { username, password });
+  return response.data;
+};
