@@ -67,9 +67,3 @@ export const listStyle = css`
     }
   }
 `;
-
-export const logo = css`
-  font-weight: bold;
-  text-decoration: none;
-  color: black;
-`;

@@ -7,6 +7,7 @@ import {
   logoStyle,
   wrapStyle,
   containerStyle,
+  linkStyle,
   btnwrap,
   btn,
 } from '../styles/loginStyles';
@@ -38,6 +39,17 @@ export default function Login(): React.ReactElement {
             onChange={(e) => setPw(e.target.value)}
             placeholder="비밀번호"
           ></input>
+        </div>
+        <div css={containerStyle}>
+          <Link css={linkStyle} href="/id-recovery">
+            아이디 찾기
+          </Link>
+          <Link css={linkStyle} href="/password-recovery">
+            비밀번호 찾기
+          </Link>
+          <Link css={linkStyle} href="/register">
+            회원가입하기
+          </Link>
         </div>
         <div css={containerStyle}>
           <button

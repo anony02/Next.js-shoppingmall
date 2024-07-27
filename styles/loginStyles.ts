@@ -19,7 +19,6 @@ export const logoStyle = css`
 `;
 
 export const wrapStyle = css`
-  background-color: rgb(240, 240, 240);
   padding: 10px;
 `;
 
@@ -27,9 +26,9 @@ export const containerStyle = css`
   display: flex;
   height: 50px;
   align-items: center;
+  justify-content: center;
   & > * {
     height: 30px;
-    margin-right: 10px;
   }
   & > div:first-child {
     width: 100px;
@@ -60,6 +59,34 @@ export const containerStyle = css`
   & > button:hover {
     border: none;
     background-color: rgba(100, 100, 100, 0export const 5);
+  }
+`;
+
+export const linkStyle = css`
+  padding: 0 10px;
+  text-decoration: none;
+  color: black;
+  position: relative;
+  font-size: 0.8rem;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+
+  &:not(:last-of-type) {
+    margin-right: 10px;
+  }
+
+  &:not(:last-of-type)::after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 50%;
+    background-color: #dddddd;
+    position: absolute;
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 `;
 

@@ -29,3 +29,37 @@ export const fetchProduct = async (id: number) => {
   const { data } = await axios.get(`https://dummyjson.com/products/${id}`);
   return data;
 };
+
+const apiClient = axios.create({
+  baseURL: 'http://localhost:3001',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+export const checkEmailExists = async (email: string) => {
+  const response = await apiClient.get(`/users?email=${email}`);
+  return response.data.length > 0;
+};
+
+export const checkUsernameExists = async (username: string) => {
+  const response = await apiClient.get(`/users?username=${username}`);
+  return response.data.length > 0;
+};
+
+export const registerUser = async ({
+  email,
+  username,
+  password,
+}: {
+  email: string;
+  username: string;
+  password: string;
+}) => {
+  const response = await apiClient.post('/users', {
+    email,
+    username,
+    password,
+  });
+  return response.data;
+};
