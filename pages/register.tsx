@@ -1,18 +1,46 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { formStyle, inputStyle, buttonStyle } from '../styles/registerStyles';
+import { useState, useEffect } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import {
+  formStyle,
+  buttonStyle,
+  inputWrapperStyle,
+  LogoStyle,
+} from '../styles/registerStyles';
 import { checkUserExists, registerUser } from '../utils/api';
+import {
+  validateUsername,
+  validatePassword,
+  validateConfirmPassword,
+} from '../utils/validators';
+import Logo from '../components/Logo';
+import InputField from '../components/InputField';
 
-const Register = () => {
+const Register: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [usernameError, setUsernameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
-  const { data: existingUsers, refetch } = useQuery({
-    queryKey: ['checkUserExists', username],
-    queryFn: () => checkUserExists(username),
-    enabled: false,
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const checkUserExistsMutation = useMutation({
+    mutationFn: checkUserExists,
+    onSuccess: (exists) => {
+      if (exists) {
+        alert('이미 가입한 회원입니다.');
+      } else {
+        mutation.mutate({ username, password });
+        useRouter;
+      }
+    },
+    onError: () => {
+      alert('회원가입 중 오류가 발생했습니다.');
+    },
   });
 
   const mutation = useMutation({
@@ -20,53 +48,58 @@ const Register = () => {
     onSuccess: (data) => {
       alert('회원가입이 완료되었습니다.');
       console.log(data);
+      queryClient.invalidateQueries({
+        queryKey: ['checkUserExists', username],
+      });
+      router.push('/login');
     },
-    onError: (error: any) => {
-      alert(error.response?.data?.message || '회원가입에 실패했습니다.');
+    onError: () => {
+      alert('회원가입에 실패했습니다.');
     },
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  useEffect(() => {
+    setUsernameError(validateUsername(username));
+    setPasswordError(validatePassword(password));
+    setConfirmPasswordError(validateConfirmPassword(password, confirmPassword));
+  }, [username, password, confirmPassword]);
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert('패스워드가 일치하지 않습니다.');
-      return;
-    }
-
-    await refetch();
-
-    if (existingUsers && existingUsers.length > 0) {
-      alert('이미 가입한 회원입니다.');
-      return;
-    }
-
-    mutation.mutate({ username, password });
+    checkUserExistsMutation.mutate(username);
   };
 
   return (
     <form css={formStyle} onSubmit={handleSubmit}>
-      <input
-        css={inputStyle}
+      <div css={inputWrapperStyle}>
+        <Logo customCss={LogoStyle} />
+      </div>
+      <InputField
+        label="아이디"
         type="text"
-        placeholder="아이디"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+        error={usernameError}
       />
-      <input
-        css={inputStyle}
+      <InputField
+        label="비밀번호"
         type="password"
-        placeholder="비밀번호"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        error={passwordError}
       />
-      <input
-        css={inputStyle}
+      <InputField
+        label="비밀번호 확인"
         type="password"
-        placeholder="비밀번호확인"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
+        error={confirmPasswordError}
       />
-      <button css={buttonStyle} type="submit">
+      <button
+        css={buttonStyle}
+        type="submit"
+        disabled={!!(usernameError || passwordError || confirmPasswordError)}
+      >
         회원가입하기
       </button>
     </form>

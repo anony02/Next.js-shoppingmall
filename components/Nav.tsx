@@ -14,8 +14,8 @@ import {
   category,
   btn,
   listStyle,
-  logo,
 } from '../styles/navStyles';
+import Logo from './Logo';
 
 export default function Nav(): React.ReactElement {
   const setCategoryList = useSetRecoilState(categoryListState);
@@ -79,9 +79,7 @@ export default function Nav(): React.ReactElement {
             ))}
           </div>
         </div>
-        <Link css={logo} href="/">
-          Shopping mall
-        </Link>
+        <Logo />
       </div>
       <div css={rightwrap}>
         <Search />

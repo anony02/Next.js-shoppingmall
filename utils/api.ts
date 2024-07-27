@@ -39,7 +39,7 @@ const apiClient = axios.create({
 
 export const checkUserExists = async (username: string) => {
   const response = await apiClient.get(`/users?username=${username}`);
-  return response.data;
+  return response.data.length > 0;
 };
 
 export const registerUser = async ({
