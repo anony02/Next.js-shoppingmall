@@ -47,6 +47,7 @@ const RAW_RUNTIME_STATE =
           ["@testing-library/react", "virtual:430e013d10155a98226a83cfbb3a3a63d8749de511fde1938c4bb4488346528aba90cca169a0cb0b409f185a7c07caadd6859f9d350233ac16ce6906a3e91870#npm:13.4.0"],\
           ["@testing-library/user-event", "virtual:430e013d10155a98226a83cfbb3a3a63d8749de511fde1938c4bb4488346528aba90cca169a0cb0b409f185a7c07caadd6859f9d350233ac16ce6906a3e91870#npm:13.5.0"],\
           ["@types/node", "npm:20.14.11"],\
+          ["@types/nodemailer", "npm:6.4.15"],\
           ["@types/react", "npm:18.3.3"],\
           ["axios", "npm:1.7.2"],\
           ["eslint", "npm:8.57.0"],\
@@ -62,6 +63,7 @@ const RAW_RUNTIME_STATE =
           ["globals", "npm:15.8.0"],\
           ["json-server", "npm:1.0.0-beta.1"],\
           ["next", "virtual:430e013d10155a98226a83cfbb3a3a63d8749de511fde1938c4bb4488346528aba90cca169a0cb0b409f185a7c07caadd6859f9d350233ac16ce6906a3e91870#npm:14.2.5"],\
+          ["nodemailer", "npm:6.9.14"],\
           ["react", "npm:18.3.1"],\
           ["react-dom", "virtual:430e013d10155a98226a83cfbb3a3a63d8749de511fde1938c4bb4488346528aba90cca169a0cb0b409f185a7c07caadd6859f9d350233ac16ce6906a3e91870#npm:18.3.1"],\
           ["recoil", "virtual:430e013d10155a98226a83cfbb3a3a63d8749de511fde1938c4bb4488346528aba90cca169a0cb0b409f185a7c07caadd6859f9d350233ac16ce6906a3e91870#npm:0.7.7"],\
@@ -5672,6 +5674,16 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@types/node", "npm:20.14.11"],\
           ["undici-types", "npm:5.26.5"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/nodemailer", [\
+      ["npm:6.4.15", {\
+        "packageLocation": "../../../../Users/I/AppData/Local/Yarn/Berry/cache/@types-nodemailer-npm-6.4.15-1f837036d5-10c0.zip/node_modules/@types/nodemailer/",\
+        "packageDependencies": [\
+          ["@types/nodemailer", "npm:6.4.15"],\
+          ["@types/node", "npm:20.14.11"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -12831,6 +12843,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["nodemailer", [\
+      ["npm:6.9.14", {\
+        "packageLocation": "../../../../Users/I/AppData/Local/Yarn/Berry/cache/nodemailer-npm-6.9.14-907ddc0136-10c0.zip/node_modules/nodemailer/",\
+        "packageDependencies": [\
+          ["nodemailer", "npm:6.9.14"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["nopt", [\
       ["npm:7.2.1", {\
         "packageLocation": "../../../../Users/I/AppData/Local/Yarn/Berry/cache/nopt-npm-7.2.1-635b7da949-10c0.zip/node_modules/nopt/",\
@@ -14882,6 +14903,7 @@ const RAW_RUNTIME_STATE =
           ["@testing-library/react", "virtual:430e013d10155a98226a83cfbb3a3a63d8749de511fde1938c4bb4488346528aba90cca169a0cb0b409f185a7c07caadd6859f9d350233ac16ce6906a3e91870#npm:13.4.0"],\
           ["@testing-library/user-event", "virtual:430e013d10155a98226a83cfbb3a3a63d8749de511fde1938c4bb4488346528aba90cca169a0cb0b409f185a7c07caadd6859f9d350233ac16ce6906a3e91870#npm:13.5.0"],\
           ["@types/node", "npm:20.14.11"],\
+          ["@types/nodemailer", "npm:6.4.15"],\
           ["@types/react", "npm:18.3.3"],\
           ["axios", "npm:1.7.2"],\
           ["eslint", "npm:8.57.0"],\
@@ -14897,6 +14919,7 @@ const RAW_RUNTIME_STATE =
           ["globals", "npm:15.8.0"],\
           ["json-server", "npm:1.0.0-beta.1"],\
           ["next", "virtual:430e013d10155a98226a83cfbb3a3a63d8749de511fde1938c4bb4488346528aba90cca169a0cb0b409f185a7c07caadd6859f9d350233ac16ce6906a3e91870#npm:14.2.5"],\
+          ["nodemailer", "npm:6.9.14"],\
           ["react", "npm:18.3.1"],\
           ["react-dom", "virtual:430e013d10155a98226a83cfbb3a3a63d8749de511fde1938c4bb4488346528aba90cca169a0cb0b409f185a7c07caadd6859f9d350233ac16ce6906a3e91870#npm:18.3.1"],\
           ["recoil", "virtual:430e013d10155a98226a83cfbb3a3a63d8749de511fde1938c4bb4488346528aba90cca169a0cb0b409f185a7c07caadd6859f9d350233ac16ce6906a3e91870#npm:0.7.7"],\

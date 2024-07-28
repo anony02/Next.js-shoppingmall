@@ -30,6 +30,8 @@ export const fetchProduct = async (id: number) => {
   return data;
 };
 
+// register.tsx
+
 const apiClient = axios.create({
   baseURL: 'http://localhost:3001',
   headers: {
@@ -39,7 +41,8 @@ const apiClient = axios.create({
 
 export const checkEmailExists = async (email: string) => {
   const response = await apiClient.get(`/users?email=${email}`);
-  return response.data.length > 0;
+  console.log(response);
+  return response.data;
 };
 
 export const checkUsernameExists = async (username: string) => {
