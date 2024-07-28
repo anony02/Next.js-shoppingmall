@@ -41,8 +41,9 @@ export const buttonStyle = css`
   border: none;
   cursor: pointer;
   border-radius: 0.5rem;
-  width: 420px;
+  width: 180px;
   height: 50px;
+  margin-bottom: 2rem;
 
   &:hover {
     opacity: 0.7;

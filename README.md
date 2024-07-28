@@ -6,21 +6,22 @@
 
 1. cd shoppingmall
 
-2. npm install
+2. yarn install
 
-3. npm run dev
+3. yarn dev
 
 ## Project Doc
 
 ### Built With
 
-| package name     | version |
-| ---------------- | ------- |
-| react            | ^18.2.0 |
-| react-dom        | ^18.2.0 |
-| react-scripts    | ^18.2.0 |
-| react-router-dom | ^6.22.3 |
-| axios            | ^1.6.8  |
+| package name  | version  |
+| ------------- | -------- |
+| react         | ^18.2.0  |
+| next          | ^14.2.5  |
+| axios         | ^1.6.8   |
+| typescript    | ^5.5.3   |
+| emotion/react | ^11.12.0 |
+| storybook     | ^8.2.5   |
 
 _자세한 개발 스택은 package.json 참고_
 
@@ -28,10 +29,13 @@ _자세한 개발 스택은 package.json 참고_
 
 1. `/`: 메인 페이지
 2. `/login`: 로그인 페이지
-3. `/cart`: 장바구니 페이지
-4. `/detail/:id`: 상품별 상세 페이지
-5. `/:category`: 카테고리별 페이지
-6. `/kakao/oauth`: 카카오 간편로그인 페이지
+3. `/register`: 회원가입 페이지
+4. `/find-username`: 아이디 찾기 페이지
+5. `/find-password`: 비밀번호 찾기 페이지
+6. `/cart`: 장바구니 페이지
+7. `/detail/:id`: 상품별 상세 페이지
+8. `/:category`: 카테고리별 페이지
+9. `/kakao/oauth`: 카카오 간편로그인 페이지
    ...
 
 ## Information

@@ -15,3 +15,10 @@ export interface ProductsState {
 export interface CartState {
   [key: number]: number;
 }
+
+export interface User {
+  id: string;
+  email: string;
+  username: string;
+  password: string;
+}

@@ -37,15 +37,15 @@ const Register: React.FC = () => {
 
   const checkEmailExistsMutation = useMutation({
     mutationFn: checkEmailExists,
-    onSuccess: (exists) => {
-      if (exists) {
+    onSuccess: (data) => {
+      if (data.length > 0) {
         alert('이미 가입된 이메일입니다.');
       } else {
         checkUsernameExistsMutation.mutate(username);
       }
     },
     onError: () => {
-      setEmailError('회원가입 중 오류가 발생했습니다.');
+      alert('회원가입 중 오류가 발생했습니다.');
     },
   });
 
@@ -137,7 +137,7 @@ const Register: React.FC = () => {
           )
         }
       >
-        회원가입하기
+        가입하기
       </button>
     </form>
   );

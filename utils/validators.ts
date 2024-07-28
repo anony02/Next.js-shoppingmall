@@ -15,7 +15,7 @@ export const validateUsername = (username: string): string => {
 export const validatePassword = (password: string): string => {
   if (
     password &&
-    !/(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/.test(
+    !/(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+~])[A-Za-z\d!@#$%^&*()_+~]{8,16}$/.test(
       password
     )
   ) {
