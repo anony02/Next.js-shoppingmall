@@ -81,47 +81,43 @@ export default function FindPassword(): React.ReactElement {
   }, [email, queryClient]);
 
   return (
-    <>
-      <form css={formStyle} onSubmit={handleSubmit}>
-        <div css={inputWrapperStyle}>
-          <Logo customCss={LogoStyle} />
-        </div>
-        <InputField
-          label="이메일"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          error={emailError}
-        />
-        <div css={inputWrapperStyle}>
-          {isLoading ? (
-            <p>로딩 중...</p>
-          ) : (
-            userFound !== null && (
-              <p>
-                {userFound ? (
-                  <span>임시 비밀번호가 이메일로 발송되었습니다.</span>
-                ) : (
-                  <span>{message}</span>
-                )}
-              </p>
-            )
-          )}
-          {error && <p>{message}</p>}
-        </div>
-        <div css={buttonContainerStyle}>
-          <button
-            css={buttonStyle}
-            type="submit"
-            disabled={!email || !!emailError}
-          >
-            임시 비밀번호 받기
-          </button>
-          <button css={buttonStyle} onClick={() => router.push('/login')}>
-            로그인 하기
-          </button>
-        </div>
-      </form>
-    </>
+    <form css={formStyle} onSubmit={handleSubmit}>
+      <Logo customCss={LogoStyle} />
+      <InputField
+        label="이메일"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        error={emailError}
+      />
+      <div css={inputWrapperStyle}>
+        {isLoading ? (
+          <p>로딩 중...</p>
+        ) : (
+          userFound !== null && (
+            <p>
+              {userFound ? (
+                <span>임시 비밀번호가 이메일로 발송되었습니다.</span>
+              ) : (
+                <span>{message}</span>
+              )}
+            </p>
+          )
+        )}
+        {error && <p>{message}</p>}
+      </div>
+      <div css={buttonContainerStyle}>
+        <button
+          css={buttonStyle}
+          type="submit"
+          disabled={!email || !!emailError}
+        >
+          임시 비밀번호 받기
+        </button>
+        <button css={buttonStyle} onClick={() => router.push('/login')}>
+          로그인 하기
+        </button>
+      </div>
+    </form>
   );
 }

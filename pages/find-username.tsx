@@ -70,53 +70,49 @@ export default function FindUsername(): React.ReactElement {
   }, [email, queryClient]);
 
   return (
-    <>
-      <form css={formStyle} onSubmit={handleSubmit}>
-        <div css={inputWrapperStyle}>
-          <Logo customCss={LogoStyle} />
-        </div>
-        <InputField
-          label="이메일"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          error={emailError}
-        />
-        <div css={inputWrapperStyle}>
-          {isLoading ? (
-            <p>로딩 중...</p>
-          ) : (
-            userFound !== null && (
-              <p>
-                {userFound ? (
-                  <>
-                    회원님의 아이디는
-                    <strong css={{ fontWeight: 'bold', color: 'blue' }}>
-                      {` ${message} `}
-                    </strong>
-                    입니다.
-                  </>
-                ) : (
-                  message
-                )}
-              </p>
-            )
-          )}
-          {error && <p>{error.message}</p>}
-        </div>
-        <div css={buttonContainerStyle}>
-          <button
-            css={buttonStyle}
-            type="submit"
-            disabled={!email || !!emailError}
-          >
-            아이디 찾기
-          </button>
-          <button css={buttonStyle} onClick={() => router.push('/login')}>
-            로그인 하기
-          </button>
-        </div>
-      </form>
-    </>
+    <form css={formStyle} onSubmit={handleSubmit}>
+      <Logo customCss={LogoStyle} />
+      <InputField
+        label="이메일"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        error={emailError}
+      />
+      <div css={inputWrapperStyle}>
+        {isLoading ? (
+          <p>로딩 중...</p>
+        ) : (
+          userFound !== null && (
+            <p>
+              {userFound ? (
+                <>
+                  회원님의 아이디는
+                  <strong css={{ fontWeight: 'bold', color: 'blue' }}>
+                    {` ${message} `}
+                  </strong>
+                  입니다.
+                </>
+              ) : (
+                message
+              )}
+            </p>
+          )
+        )}
+        {error && <p>{error.message}</p>}
+      </div>
+      <div css={buttonContainerStyle}>
+        <button
+          css={buttonStyle}
+          type="submit"
+          disabled={!email || !!emailError}
+        >
+          아이디 찾기
+        </button>
+        <button css={buttonStyle} onClick={() => router.push('/login')}>
+          로그인 하기
+        </button>
+      </div>
+    </form>
   );
 }

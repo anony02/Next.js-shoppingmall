@@ -3,12 +3,10 @@ import React from 'react';
 import { Meta, StoryFn } from '@storybook/react';
 import InputField from '../components/InputField';
 
-// 스토리북 메타데이터
 const meta: Meta<typeof InputField> = {
   title: 'Components/InputField',
   component: InputField,
   parameters: {
-    // 스토리북 설정
     layout: 'centered',
   },
 };

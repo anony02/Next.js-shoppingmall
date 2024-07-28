@@ -23,14 +23,14 @@ import Logo from '../components/Logo';
 import InputField from '../components/InputField';
 
 const Register: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [usernameError, setUsernameError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [emailError, setEmailError] = useState<string>('');
+  const [usernameError, setUsernameError] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<string>('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string>('');
 
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -93,9 +93,7 @@ const Register: React.FC = () => {
 
   return (
     <form css={formStyle} onSubmit={handleSubmit}>
-      <div css={inputWrapperStyle}>
-        <Logo customCss={LogoStyle} />
-      </div>
+      <Logo customCss={LogoStyle} />
       <InputField
         label="이메일"
         type="email"
