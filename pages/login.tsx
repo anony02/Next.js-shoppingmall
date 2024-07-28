@@ -44,7 +44,7 @@ export default function Login(): React.ReactElement {
           <Link css={linkStyle} href="/find-username">
             아이디 찾기
           </Link>
-          <Link css={linkStyle} href="/find-password">
+          <Link css={linkStyle} href="/reset-password">
             비밀번호 찾기
           </Link>
           <Link css={linkStyle} href="/register">

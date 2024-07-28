@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useState, useEffect } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import {
   formStyle,
@@ -10,12 +10,12 @@ import {
 } from '../styles/registerStyles';
 import { buttonContainerStyle } from '../styles/findUsernameStyles';
 import { validateEmail } from '../utils/validators';
-import { checkEmailExists } from '../utils/api';
+import { checkEmailExists, updatePassword } from '../utils/api';
 import Logo from '../components/Logo';
 import InputField from '../components/InputField';
 import { User } from '../types';
 
-export default function FindUsername(): React.ReactElement {
+export default function FindPassword(): React.ReactElement {
   const [email, setEmail] = useState<string>('');
   const [emailError, setEmailError] = useState<string>('');
   const [message, setMessage] = useState<string>('');
@@ -31,6 +31,18 @@ export default function FindUsername(): React.ReactElement {
     enabled,
   });
 
+  const mutation = useMutation({
+    mutationFn: updatePassword,
+    onSuccess: () => {
+      setMessage('임시 비밀번호가 이메일로 발송되었습니다.');
+      setEnabled(false);
+    },
+    onError: () => {
+      setMessage('비밀번호 업데이트 중 오류가 발생했습니다.');
+      setEnabled(false);
+    },
+  });
+
   useEffect(() => {
     setEmailError(validateEmail(email));
     setMessage('');
@@ -43,14 +55,13 @@ export default function FindUsername(): React.ReactElement {
   };
 
   useEffect(() => {
-    if (data) {
-      if (data.length > 0) {
-        setMessage(data[0].username);
-        setUserFound(true);
-      } else {
-        setMessage('일치하는 회원정보가 없습니다');
-        setUserFound(false);
-      }
+    if (!data) return;
+    if (data.length > 0) {
+      mutation.mutate(data[0]);
+      setUserFound(true);
+    } else {
+      setMessage('일치하는 회원정보가 없습니다');
+      setUserFound(false);
       setEnabled(false);
     }
   }, [data]);
@@ -89,20 +100,14 @@ export default function FindUsername(): React.ReactElement {
             userFound !== null && (
               <p>
                 {userFound ? (
-                  <>
-                    회원님의 아이디는
-                    <strong css={{ fontWeight: 'bold', color: 'blue' }}>
-                      {` ${message} `}
-                    </strong>
-                    입니다.
-                  </>
+                  <span>임시 비밀번호가 이메일로 발송되었습니다.</span>
                 ) : (
-                  message
+                  <span>{message}</span>
                 )}
               </p>
             )
           )}
-          {error && <p>{error.message}</p>}
+          {error && <p>{message}</p>}
         </div>
         <div css={buttonContainerStyle}>
           <button
@@ -110,7 +115,7 @@ export default function FindUsername(): React.ReactElement {
             type="submit"
             disabled={!email || !!emailError}
           >
-            아이디 찾기
+            임시 비밀번호 받기
           </button>
           <button css={buttonStyle} onClick={() => router.push('/login')}>
             로그인 하기

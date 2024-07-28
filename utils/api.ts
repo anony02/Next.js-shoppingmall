@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { Product } from '../types';
+import { generateTempPassword } from './generateTempPassword';
+import { Product, User } from '../types';
 
 export const fetchProducts = async (): Promise<Product[]> => {
   const response = await axios.get('https://dummyjson.com/products?limit=0');
@@ -31,7 +32,6 @@ export const fetchProduct = async (id: number) => {
 };
 
 // register.tsx
-
 const apiClient = axios.create({
   baseURL: 'http://localhost:3001',
   headers: {
@@ -39,9 +39,8 @@ const apiClient = axios.create({
   },
 });
 
-export const checkEmailExists = async (email: string) => {
+export const checkEmailExists = async (email: string): Promise<User[]> => {
   const response = await apiClient.get(`/users?email=${email}`);
-  console.log(response);
   return response.data;
 };
 
@@ -65,4 +64,18 @@ export const registerUser = async ({
     password,
   });
   return response.data;
+};
+
+// find-password.tsx
+export const updatePassword = async (user: User): Promise<User> => {
+  const tempPassword = generateTempPassword();
+  sendEmail(user.email, tempPassword);
+  const response = await apiClient.patch(`/users/${user.id}`, {
+    password: tempPassword,
+  });
+  return response.data;
+};
+
+const sendEmail = async (email: string, tempPassword: string) => {
+  await axios.post('/api/sendEmail', { email, tempPassword });
 };
