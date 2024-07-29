@@ -16,6 +16,7 @@ import {
   listStyle,
   popupStyle,
   buttonStyle,
+  selectedCategoryStyle,
 } from '../styles/navStyles';
 import Logo from './Logo';
 import { HamburgerIcon, UserIcon, CartIcon } from './NavIcons';
@@ -27,6 +28,8 @@ const isLoggedIn = () =>
 
 export default function Nav(): React.ReactElement {
   const [hoverMessage, setHoverMessage] = useState<string>('');
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const setCategoryList = useSetRecoilState(categoryListState);
 
   const router = useRouter();
@@ -63,15 +66,41 @@ export default function Nav(): React.ReactElement {
           router.push('/login');
         });
 
+  const handleMenuToggle = () => setMenuOpen((prevState) => !prevState);
+
+  const handleCategoryClick = (category: string) => {
+    if (selectedCategory === category) {
+      setSelectedCategory(null);
+      router.push('/');
+    } else {
+      setSelectedCategory(category);
+      router.push(`/${category}`);
+    }
+  };
+
   return (
     <nav css={nav}>
       <div css={leftwrap}>
         <div css={category}>
-          <HamburgerIcon />
-          <div css={listStyle} className="list">
+          <button css={buttonStyle} onClick={handleMenuToggle}>
+            <HamburgerIcon />
+          </button>
+          <div css={listStyle} className={menuOpen ? 'open' : ''}>
             {data?.map((category: string) => (
-              <Link key={category} href={`/${category}`}>
-                {category + '\n'}
+              <Link
+                css={
+                  selectedCategory === category
+                    ? selectedCategoryStyle
+                    : undefined
+                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleCategoryClick(category);
+                }}
+                key={category}
+                href={`/${category}`}
+              >
+                {category}
               </Link>
             ))}
           </div>
