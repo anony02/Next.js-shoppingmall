@@ -32,6 +32,7 @@ export const rightwrap = css`
 export const btnwrap = css`
   display: flex;
   align-items: center;
+  position: relative;
 `;
 
 export const category = css`
@@ -66,4 +67,19 @@ export const listStyle = css`
       font-weight: 900;
     }
   }
+`;
+
+export const popupStyle = css`
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 10;
 `;

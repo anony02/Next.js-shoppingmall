@@ -2,6 +2,7 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import {
   inputStyle,
   buttonStyle,
@@ -10,14 +11,25 @@ import {
 } from '../styles/loginStyles';
 import { formStyle, LogoStyle } from '../styles/registerStyles';
 import Logo from '../components/Logo';
+import { loginUser } from '../utils/useLogin';
 
 export default function Login(): React.ReactElement {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const router = useRouter();
 
+  const useLogin = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (id) => {
+      localStorage.setItem('token', id);
+      router.push('/');
+    },
+    onError: (error) => alert(error.message),
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    useLogin.mutate({ username, password });
   };
 
   return (

@@ -2,12 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import {
-  formStyle,
-  buttonStyle,
-  inputWrapperStyle,
-  LogoStyle,
-} from '../styles/registerStyles';
+import { formStyle, buttonStyle, LogoStyle } from '../styles/registerStyles';
 import {
   checkEmailExists,
   checkUsernameExists,
@@ -51,8 +46,8 @@ const Register: React.FC = () => {
 
   const checkUsernameExistsMutation = useMutation({
     mutationFn: checkUsernameExists,
-    onSuccess: (exists) => {
-      if (exists) {
+    onSuccess: (data) => {
+      if (data.length > 0) {
         alert('이미 존재하는 아이디입니다.');
       } else {
         registerUserMutation.mutate({ email, username, password });
