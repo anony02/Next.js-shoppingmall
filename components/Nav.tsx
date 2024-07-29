@@ -51,6 +51,8 @@ export default function Nav(): React.ReactElement {
         localStorage.removeItem('token');
         router.push('/');
       }
+    } else {
+      router.push('/login');
     }
   };
 
@@ -61,6 +63,8 @@ export default function Nav(): React.ReactElement {
       if (confirmLogin) {
         router.push('/login');
       }
+    } else {
+      router.push('/cart');
     }
   };
 
