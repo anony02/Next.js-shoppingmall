@@ -7,6 +7,7 @@ import { productListState, filterState } from '../recoil/atoms';
 import Card from '../components/Card';
 import Filter from '../components/Filter';
 import { mainStyle, filtersStyle, productsStyle } from '../styles/mainStyles';
+import { LoadingSpinner, ErrorMessages } from '../components/FetchingScreen';
 
 export default function Category({
   category,
@@ -41,8 +42,8 @@ export default function Category({
     return sortedList;
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading data</div>;
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return <ErrorMessages />;
 
   return (
     <main css={mainStyle}>

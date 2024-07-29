@@ -15,6 +15,7 @@ import {
   selectStyle,
   selectboxStyle,
 } from '../styles/detailStyles';
+import { LoadingSpinner, ErrorMessages } from '../components/FetchingScreen';
 
 export default function Detail({ id }: { id: number }): React.ReactElement {
   const [count, setCount] = useState<number>(0);
@@ -27,14 +28,12 @@ export default function Detail({ id }: { id: number }): React.ReactElement {
   } = useQuery({
     queryKey: ['product', id],
     queryFn: () => fetchProduct(id),
-    // `enabled` 속성을 사용하여 id가 있을 때만 쿼리를 실행
     enabled: !!id,
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Something went wrong!</div>;
-
-  if (!product) return <div>Product not found</div>;
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return <ErrorMessages />;
+  if (!product) return <div>상품 정보가 없습니다.</div>;
 
   const handleAddToCart = () => {
     const updatedCart = { ...cart, [product.id]: count };
