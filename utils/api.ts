@@ -46,7 +46,7 @@ export const checkEmailExists = async (email: string): Promise<User[]> => {
 
 export const checkUsernameExists = async (username: string) => {
   const response = await apiClient.get(`/users?username=${username}`);
-  return response.data.length > 0;
+  return response.data;
 };
 
 export const registerUser = async ({

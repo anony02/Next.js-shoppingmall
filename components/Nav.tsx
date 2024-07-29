@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
 import Search from './Search';
@@ -12,65 +13,61 @@ import {
   rightwrap,
   btnwrap,
   category,
-  btn,
   listStyle,
+  popupStyle,
+  buttonStyle,
 } from '../styles/navStyles';
 import Logo from './Logo';
+import { HamburgerIcon, UserIcon, CartIcon } from './NavIcons';
+import Modal from './Modal';
+import { useModal } from '../utils/useModal';
+
+const isLoggedIn = () =>
+  typeof window !== 'undefined' && !!localStorage.getItem('token');
 
 export default function Nav(): React.ReactElement {
+  const [hoverMessage, setHoverMessage] = useState<string>('');
   const setCategoryList = useSetRecoilState(categoryListState);
-  const { data, error, isLoading } = useQuery({
+
+  const router = useRouter();
+
+  const { data } = useQuery({
     queryKey: ['categories'],
     queryFn: fetchCategories,
   });
 
   useEffect(() => {
-    if (data) {
-      setCategoryList(data);
-    }
+    if (data) setCategoryList(data);
   }, [data, setCategoryList]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading categories</div>;
+  const { modal, showModal, modalMessage, handleConfirm, handleCancel } =
+    useModal();
+
+  const handleMouseEnter = () =>
+    setHoverMessage(isLoggedIn() ? '로그아웃' : '로그인');
+  const handleMouseLeave = () => setHoverMessage('');
+
+  const handleUser = () =>
+    isLoggedIn()
+      ? modal('로그아웃 하시겠습니까?', () => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('cart');
+          router.push('/');
+        })
+      : router.push('/login');
+
+  const handleCart = () =>
+    isLoggedIn()
+      ? router.push('/cart')
+      : modal('로그인 하시겠습니까?', () => {
+          router.push('/login');
+        });
 
   return (
     <nav css={nav}>
       <div css={leftwrap}>
         <div css={category}>
-          <svg
-            css={btn}
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g
-              id="SVGRepo_tracerCarrier"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></g>
-            <g id="SVGRepo_iconCarrier">
-              <g clipPath="url(#clip0_429_11066)">
-                <path
-                  d="M3 6.00092H21M3 12.0009H21M3 18.0009H21"
-                  stroke="#292929"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></path>
-              </g>
-              <defs>
-                <clipPath id="clip0_429_11066">
-                  <rect
-                    width="24"
-                    height="24"
-                    fill="white"
-                    transform="translate(0 0.000915527)"
-                  ></rect>
-                </clipPath>
-              </defs>
-            </g>
-          </svg>
+          <HamburgerIcon />
           <div css={listStyle} className="list">
             {data?.map((category: string) => (
               <Link key={category} href={`/${category}`}>
@@ -83,50 +80,27 @@ export default function Nav(): React.ReactElement {
       </div>
       <div css={rightwrap}>
         <Search />
-        <Link css={btnwrap} href="/login">
-          <svg
-            css={btn}
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="#000000"
+        <div css={btnwrap}>
+          <button
+            css={buttonStyle}
+            onClick={handleUser}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
-            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g
-              id="SVGRepo_tracerCarrier"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></g>
-            <g id="SVGRepo_iconCarrier">
-              <circle fill="none" cx="12" cy="7" r="3"></circle>
-              <path d="M12 2C9.243 2 7 4.243 7 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zm0 8c-1.654 0-3-1.346-3-3s1.346-3 3-3 3 1.346 3 3-1.346 3-3 3zm9 11v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h2v-1c0-2.757 2.243-5 5-5h4c2.757 0 5 2.243 5 5v1h2z"></path>
-            </g>
-          </svg>
-        </Link>
-        <Link css={btnwrap} href="/cart">
-          <svg
-            css={btn}
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g
-              id="SVGRepo_tracerCarrier"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></g>
-            <g id="SVGRepo_iconCarrier">
-              <path
-                d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
-                stroke="#000000"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></path>
-            </g>
-          </svg>
-        </Link>
+            <UserIcon />
+          </button>
+          {hoverMessage && <div css={popupStyle}>{hoverMessage}</div>}
+        </div>
+        <button css={buttonStyle} onClick={handleCart}>
+          <CartIcon />
+        </button>
       </div>
+      <Modal
+        message={modalMessage}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        isVisible={showModal}
+      />
     </nav>
   );
 }

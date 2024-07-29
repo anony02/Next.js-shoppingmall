@@ -43,7 +43,7 @@ export const buttonStyle = css`
   border-radius: 0.5rem;
   width: 180px;
   height: 50px;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 
   &:hover {
     opacity: 0.7;
@@ -76,4 +76,5 @@ export const errorStyle = css`
 
 export const LogoStyle = css`
   font-size: 1.5rem;
+  margin-bottom: 2rem;
 `;
