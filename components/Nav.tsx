@@ -15,64 +15,59 @@ import {
   category,
   listStyle,
   popupStyle,
+  buttonStyle,
 } from '../styles/navStyles';
 import Logo from './Logo';
-import { HamburgerButton, UserButton, CartButton } from './NavButtons';
+import { HamburgerIcon, UserIcon, CartIcon } from './NavIcons';
+import Modal from './Modal';
+import { useModal } from '../utils/useModal';
 
-const isLoggedIn = () => {
-  if (typeof window !== 'undefined') return !!localStorage.getItem('token');
-};
+const isLoggedIn = () =>
+  typeof window !== 'undefined' && !!localStorage.getItem('token');
 
 export default function Nav(): React.ReactElement {
   const [hoverMessage, setHoverMessage] = useState<string>('');
-  const router = useRouter();
   const setCategoryList = useSetRecoilState(categoryListState);
+
+  const router = useRouter();
+
   const { data } = useQuery({
     queryKey: ['categories'],
     queryFn: fetchCategories,
   });
 
   useEffect(() => {
-    if (data) {
-      setCategoryList(data);
-    }
+    if (data) setCategoryList(data);
   }, [data, setCategoryList]);
+
+  const { modal, showModal, modalMessage, handleConfirm, handleCancel } =
+    useModal();
 
   const handleMouseEnter = () =>
     setHoverMessage(isLoggedIn() ? '로그아웃' : '로그인');
-
   const handleMouseLeave = () => setHoverMessage('');
 
-  const handleUser = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (isLoggedIn()) {
-      const confirmLogout = window.confirm('로그아웃 하시겠습니까?');
-      if (confirmLogout) {
-        localStorage.removeItem('token');
-        router.push('/');
-      }
-    } else {
-      router.push('/login');
-    }
-  };
+  const handleUser = () =>
+    isLoggedIn()
+      ? modal('로그아웃 하시겠습니까?', () => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('cart');
+          router.push('/');
+        })
+      : router.push('/login');
 
-  const handleCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (!isLoggedIn()) {
-      const confirmLogin = window.confirm('로그인 하시겠습니까?');
-      if (confirmLogin) {
-        router.push('/login');
-      }
-    } else {
-      router.push('/cart');
-    }
-  };
+  const handleCart = () =>
+    isLoggedIn()
+      ? router.push('/cart')
+      : modal('로그인 하시겠습니까?', () => {
+          router.push('/login');
+        });
 
   return (
     <nav css={nav}>
       <div css={leftwrap}>
         <div css={category}>
-          <HamburgerButton />
+          <HamburgerIcon />
           <div css={listStyle} className="list">
             {data?.map((category: string) => (
               <Link key={category} href={`/${category}`}>
@@ -86,20 +81,26 @@ export default function Nav(): React.ReactElement {
       <div css={rightwrap}>
         <Search />
         <div css={btnwrap}>
-          <Link
-            href="/login"
+          <button
+            css={buttonStyle}
             onClick={handleUser}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <UserButton />
-          </Link>
+            <UserIcon />
+          </button>
           {hoverMessage && <div css={popupStyle}>{hoverMessage}</div>}
         </div>
-        <Link css={btnwrap} href="/cart" onClick={handleCart}>
-          <CartButton />
-        </Link>
+        <button css={buttonStyle} onClick={handleCart}>
+          <CartIcon />
+        </button>
       </div>
+      <Modal
+        message={modalMessage}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        isVisible={showModal}
+      />
     </nav>
   );
 }

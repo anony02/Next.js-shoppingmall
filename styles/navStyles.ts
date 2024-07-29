@@ -30,8 +30,6 @@ export const rightwrap = css`
 `;
 
 export const btnwrap = css`
-  display: flex;
-  align-items: center;
   position: relative;
 `;
 
@@ -40,6 +38,17 @@ export const category = css`
   display: flex;
   &:hover .list {
     visibility: visible;
+  }
+`;
+
+export const buttonStyle = css`
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    border: none;
+    opacity: 0.5;
   }
 `;
 

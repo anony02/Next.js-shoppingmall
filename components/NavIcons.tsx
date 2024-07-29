@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { btn } from '../styles/navStyles';
 
-export function HamburgerButton(): React.ReactElement {
+export function HamburgerIcon(): React.ReactElement {
   return (
     <svg
       css={btn}
@@ -40,7 +40,7 @@ export function HamburgerButton(): React.ReactElement {
   );
 }
 
-export function UserButton(): React.ReactElement {
+export function UserIcon(): React.ReactElement {
   return (
     <svg
       css={btn}
@@ -62,7 +62,7 @@ export function UserButton(): React.ReactElement {
   );
 }
 
-export function CartButton(): React.ReactElement {
+export function CartIcon(): React.ReactElement {
   return (
     <svg
       css={btn}
