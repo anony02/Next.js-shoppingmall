@@ -33,6 +33,7 @@ export default function Detail({ id }: { id: number }): React.ReactElement {
 
   if (isLoading) return <LoadingSpinner />;
   if (error) return <ErrorMessages />;
+  if (!product) return <div>상품 정보가 없습니다.</div>;
 
   const handleAddToCart = () => {
     const updatedCart = { ...cart, [product.id]: count };
