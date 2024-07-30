@@ -2,8 +2,10 @@
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { cartState } from '../recoil/atoms';
 import { fetchProduct } from '../utils/api';
+import { useModal } from '../utils/useModal';
 import {
   detailStyle,
   imgStyle,
@@ -13,14 +15,30 @@ import {
   discountStyle,
   priceStyle,
   soldoutStyle,
+  buttonContainerStyle,
 } from '../styles/detailStyles';
+import { buttonStyle } from '../styles/loginStyles';
 import { LoadingSpinner, ErrorMessages } from '../components/FetchingScreen';
 import QuantitySelector from '../components/QuantitySelector';
-import { buttonStyle } from '../styles/loginStyles';
+import Modal from '../components/Modal';
+
+const isLoggedIn = () =>
+  typeof window !== 'undefined' && !!localStorage.getItem('token');
 
 export default function Detail({ id }: { id: number }): React.ReactElement {
   const [count, setCount] = useState<number>(0);
   const [cart, setCart] = useRecoilState(cartState);
+
+  const router = useRouter();
+
+  const {
+    modal,
+    showModal,
+    modalMessage,
+    handleConfirm,
+    handleCancel,
+    modalMode,
+  } = useModal();
 
   const {
     data: product,
@@ -37,10 +55,15 @@ export default function Detail({ id }: { id: number }): React.ReactElement {
   if (!product) return <div>상품 정보가 없습니다.</div>;
 
   const handleAddToCart = () => {
-    const updatedCart = { ...cart, [product.id]: count };
-    setCart(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    alert('장바구니에 상품이 추가되었습니다.');
+    if (!count) return;
+    if (!isLoggedIn()) {
+      modal('로그인 하시겠습니까?', () => router.push('/login'), 'confirm');
+    } else {
+      const updatedCart = { ...cart, [product.id]: count };
+      setCart(updatedCart);
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      modal('장바구니에 상품이 추가되었습니다.', () => {}, 'alert');
+    }
   };
 
   const minus = () =>
@@ -49,16 +72,14 @@ export default function Detail({ id }: { id: number }): React.ReactElement {
     setCount((prevCount) =>
       prevCount === product.stock ? product.stock : prevCount + 1
     );
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      setCount(0);
+      return;
+    }
     const value = parseInt(e.target.value);
-    if (isNaN(value)) {
-      alert('숫자를 입력해주세요');
-      return;
-    }
-    if (value > product.stock) {
-      alert('남은 수량을 확인해주세요');
-      return;
-    }
+    if (isNaN(value) || value > product.stock) return;
     setCount(value);
   };
 
@@ -94,10 +115,19 @@ export default function Detail({ id }: { id: number }): React.ReactElement {
             totalCost={Math.round(product.price * count * 1350)}
           />
         </div>
-        <button css={buttonStyle} onClick={handleAddToCart}>
-          장바구니 담기
-        </button>
+        <div css={buttonContainerStyle}>
+          <button css={buttonStyle} onClick={handleAddToCart}>
+            장바구니 담기
+          </button>
+        </div>
       </div>
+      <Modal
+        message={modalMessage}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        isVisible={showModal}
+        mode={modalMode}
+      />
     </div>
   );
 }

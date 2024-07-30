@@ -21,15 +21,14 @@ export const infoStyle = css`
   justify-content: center;
   font-size: 16px;
 
-  & > button {
-    margin-top: 10px;
+  & > div {
+    margin-top: 1rem;
   }
 `;
 
 export const titleStyle = css`
   font-weight: bold;
   font-size: 28px;
-  padding: 10px 0;
   width: 500px;
 `;
 
@@ -38,7 +37,11 @@ export const descStyle = css`
   border-bottom: 2px solid rgb(220, 220, 220);
 
   & > * {
-    padding: 10px 0;
+    margin-top: 1rem;
+
+    &:last-child {
+      margin-bottom: 1rem;
+    }
   }
 `;
 
@@ -102,4 +105,9 @@ export const selectboxStyle = css`
       outline: none;
     }
   }
+`;
+
+export const buttonContainerStyle = css`
+  display: flex;
+  justify-content: center;
 `;

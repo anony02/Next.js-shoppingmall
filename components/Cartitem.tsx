@@ -53,15 +53,13 @@ export default function Cartitem({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      setCount(0);
+      changecnt(id, 0);
+      return;
+    }
     const value = parseInt(e.target.value);
-    if (isNaN(value)) {
-      alert('숫자를 입력해주세요');
-      return;
-    }
-    if (value > product.stock) {
-      alert('남은 수량을 확인해주세요');
-      return;
-    }
+    if (isNaN(value) || value > product.stock) return;
     setCount(value);
     changecnt(id, value);
   };

@@ -5,11 +5,18 @@ export function useModal() {
   const [modalMessage, setModalMessage] = useState<string>('');
   const [modalConfirm, setModalConfirm] = useState<() => void>(() => () => {});
 
+  const [modalMode, setModalMode] = useState<'alert' | 'confirm'>('alert');
+
   const modal = useCallback(
-    (message: string, onConfirm: () => void = () => {}) => {
+    (
+      message: string,
+      onConfirm: () => void = () => {},
+      mode: 'alert' | 'confirm' = 'alert'
+    ) => {
       setModalMessage(message);
       setModalConfirm(() => onConfirm);
       setShowModal(true);
+      setModalMode(mode);
     },
     []
   );
@@ -27,5 +34,6 @@ export function useModal() {
     modalMessage,
     handleConfirm,
     handleCancel,
+    modalMode,
   };
 }
