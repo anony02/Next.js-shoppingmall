@@ -13,13 +13,13 @@ const globalStyles = css`
   }
 
   label:hover {
-    font-weight: 900;
-    color: #0b57d0;
+    font-weight: bold;
+    color: blue;
   }
 
   input:checked + span {
-    font-weight: 900;
-    color: #0b57d0;
+    font-weight: bold;
+    color: blue;
   }
 
   button {

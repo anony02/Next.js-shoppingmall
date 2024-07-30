@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 
 export const nav = css`
   height: 50px;
@@ -21,6 +21,67 @@ export const leftwrap = css`
   }
 `;
 
+export const category = css`
+  display: flex;
+  flex-direction: column;
+`;
+
+const slideIn = keyframes`
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-22px);
+    opacity: 1;
+  }
+`;
+
+const slideOut = keyframes`
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+`;
+
+export const listStyle = css`
+  position: absolute;
+  visibility: visible;
+  z-index: 1;
+  background-color: rgb(240, 240, 240);
+  border-right: 1px solid rgb(200, 200, 200);
+  padding: 1rem;
+  font-size: 0.75rem;
+  top: 50px;
+  line-height: 200%;
+  width: 10rem;
+  height: calc(100vh - 50px);
+  animation: ${slideOut} 0.3s forwards;
+
+  &.open {
+    animation: ${slideIn} 0.3s forwards;
+  }
+
+  & > a {
+    display: block;
+    text-decoration: none;
+    color: black;
+    &:hover {
+      color: blue;
+      font-weight: bold;
+    }
+  }
+`;
+
+export const selectedCategoryStyle = css`
+  color: blue !important;
+  font-weight: bold;
+`;
+
 export const rightwrap = css`
   display: flex;
   align-items: center;
@@ -31,14 +92,6 @@ export const rightwrap = css`
 
 export const btnwrap = css`
   position: relative;
-`;
-
-export const category = css`
-  position: relative;
-  display: flex;
-  &:hover .list {
-    visibility: visible;
-  }
 `;
 
 export const buttonStyle = css`
@@ -54,28 +107,6 @@ export const buttonStyle = css`
 
 export const btn = css`
   width: 30px;
-`;
-
-export const listStyle = css`
-  position: absolute;
-  visibility: hidden;
-  z-index: 1;
-  background-color: white;
-  border: 1px solid rgb(200, 200, 200);
-  padding: 10px;
-  font-size: 12px;
-  top: 100%;
-  line-height: 200%;
-  width: 130px;
-  white-space: pre-wrap;
-  & > a {
-    text-decoration: none;
-    color: black;
-    &:hover {
-      color: #0b57d0;
-      font-weight: 900;
-    }
-  }
 `;
 
 export const popupStyle = css`

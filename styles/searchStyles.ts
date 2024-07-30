@@ -11,6 +11,12 @@ export const searchbox = css`
   position: relative;
 `;
 
+export const searchboxActive = css`
+  ${searchbox};
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+`;
+
 export const searchicon = css`
   height: 20px;
   fill: black;
@@ -39,18 +45,23 @@ export const dropdownStyle = css`
   right: 0px;
   overflow: auto;
   border: 1px solid rgb(240, 240, 240);
+  border-top: none;
   background-color: white;
   color: gray;
   display: flex;
   flex-direction: column;
-  & > a {
-    text-decoration: none;
+
+  & > div {
     margin-top: 6px;
-    font-size: 14px;
-    white-space: pre-wrap;
-    color: black;
+    font-size: 0.8rem;
+
     &:hover {
       background-color: lightgray;
     }
   }
+`;
+
+export const highlightText = css`
+  color: black;
+  font-weight: bold;
 `;
