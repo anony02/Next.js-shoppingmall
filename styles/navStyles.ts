@@ -39,7 +39,7 @@ const slideIn = keyframes`
 
 const slideOut = keyframes`
   from {
-    transform: translateX(0);
+    transform: translateX(-22px);
     opacity: 1;
   }
   to {

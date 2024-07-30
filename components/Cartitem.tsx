@@ -10,9 +10,8 @@ import {
   soldout,
   btnwrap,
   deleteStyle,
-  select,
-  selectbox,
 } from '../styles/cartitemStyles';
+import QuantitySelector from './QuantitySelector';
 
 interface Product {
   title: string;
@@ -54,15 +53,13 @@ export default function Cartitem({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      setCount(0);
+      changecnt(id, 0);
+      return;
+    }
     const value = parseInt(e.target.value);
-    if (isNaN(value)) {
-      alert('숫자를 입력해주세요');
-      return;
-    }
-    if (value > product.stock) {
-      alert('남은 수량을 확인해주세요');
-      return;
-    }
+    if (isNaN(value) || value > product.stock) return;
     setCount(value);
     changecnt(id, value);
   };
@@ -95,23 +92,17 @@ export default function Cartitem({
             <button css={deleteStyle} onClick={() => deleteItem(id)}>
               X
             </button>
-            <div css={select}>
-              <div css={selectbox}>
-                <button onClick={minus}>-</button>
-                <input value={count} onChange={handleChange} />
-                <button onClick={plus}>+</button>
-              </div>
-              <div>
-                {Math.round(product.price * count * 1350).toLocaleString(
-                  'ko-KR'
-                )}
-                원
-              </div>
-            </div>
+            <QuantitySelector
+              count={count}
+              minus={minus}
+              plus={plus}
+              handleChange={handleChange}
+              totalCost={Math.round(product.price * count * 1350)}
+            />
           </div>
         </>
       ) : (
-        <div>제품 정보를 가져오는 중입니다...</div>
+        <div>제품 정보를 가져오는 중입니다.</div>
       )}
     </div>
   );

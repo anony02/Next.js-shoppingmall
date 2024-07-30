@@ -1,8 +1,7 @@
 import { css } from '@emotion/react';
 
 export const detailStyle = css`
-  padding: 80px 50px;
-  background-clip: content-box;
+  padding: 5rem 10rem;
   display: flex;
 `;
 
@@ -16,22 +15,34 @@ export const imgStyle = css`
 export const infoStyle = css`
   width: 500px;
   height: 500px;
-  padding: 50px;
+  padding: 0 50px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   font-size: 16px;
-  & > * {
-    padding: 10px 0;
-  }
-  & > button {
-    margin-top: 10px;
+
+  & > div {
+    margin-top: 1rem;
   }
 `;
 
 export const titleStyle = css`
   font-weight: bold;
   font-size: 28px;
+  width: 500px;
+`;
+
+export const descStyle = css`
+  border-top: 2px solid rgb(220, 220, 220);
   border-bottom: 2px solid rgb(220, 220, 220);
+
+  & > * {
+    margin-top: 1rem;
+
+    &:last-child {
+      margin-bottom: 1rem;
+    }
+  }
 `;
 
 export const discountStyle = css`
@@ -52,36 +63,51 @@ export const soldoutStyle = css`
   margin-left: 5px;
 `;
 
-export const selectStyle = css`
+export const selectorStyle = css`
   display: flex;
+  justify-content: space-between;
   line-height: 30px;
-  border-bottom: 2px solid rgb(220, 220, 220);
+
   & > div {
+    height: 30px;
     width: 120px;
     text-align: end;
+    font-weight: bold;
   }
 `;
 
 export const selectboxStyle = css`
-  width: 120px;
-  height: 30px;
   display: flex;
-  align-content: center;
-  margin-right: 60px;
-  & > button {
-    border-collapse: collapse;
+
+  & > * {
+    border: 1px solid black;
+    height: 30px;
     line-height: 30px;
+  }
+
+  & > button {
     width: 30px;
-    height: 30px;
-    font-size: 16px;
-    padding: 0;
+    font-weight: bold;
+    background-color: black;
+    color: white;
+
+    &: hover {
+      opacity: 0.7;
+    }
   }
+
   & > input {
-    border: 1px solid rgb(230, 230, 230);
-    padding: 0;
     width: 60px;
-    height: 30px;
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
+
+    &:focus {
+      outline: none;
+    }
   }
+`;
+
+export const buttonContainerStyle = css`
+  display: flex;
+  justify-content: center;
 `;

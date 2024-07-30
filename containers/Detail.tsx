@@ -2,24 +2,43 @@
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { cartState } from '../recoil/atoms';
 import { fetchProduct } from '../utils/api';
+import { useModal } from '../utils/useModal';
 import {
   detailStyle,
   imgStyle,
   infoStyle,
   titleStyle,
+  descStyle,
   discountStyle,
   priceStyle,
   soldoutStyle,
-  selectStyle,
-  selectboxStyle,
+  buttonContainerStyle,
 } from '../styles/detailStyles';
+import { buttonStyle } from '../styles/loginStyles';
 import { LoadingSpinner, ErrorMessages } from '../components/FetchingScreen';
+import QuantitySelector from '../components/QuantitySelector';
+import Modal from '../components/Modal';
+
+const isLoggedIn = () =>
+  typeof window !== 'undefined' && !!localStorage.getItem('token');
 
 export default function Detail({ id }: { id: number }): React.ReactElement {
   const [count, setCount] = useState<number>(0);
   const [cart, setCart] = useRecoilState(cartState);
+
+  const router = useRouter();
+
+  const {
+    modal,
+    showModal,
+    modalMessage,
+    handleConfirm,
+    handleCancel,
+    modalMode,
+  } = useModal();
 
   const {
     data: product,
@@ -36,10 +55,32 @@ export default function Detail({ id }: { id: number }): React.ReactElement {
   if (!product) return <div>상품 정보가 없습니다.</div>;
 
   const handleAddToCart = () => {
-    const updatedCart = { ...cart, [product.id]: count };
-    setCart(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    alert('장바구니에 상품이 추가되었습니다.');
+    if (!count) return;
+    if (!isLoggedIn()) {
+      modal('로그인 하시겠습니까?', () => router.push('/login'), 'confirm');
+    } else {
+      const updatedCart = { ...cart, [product.id]: count };
+      setCart(updatedCart);
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      modal('장바구니에 상품이 추가되었습니다.', () => {}, 'alert');
+    }
+  };
+
+  const minus = () =>
+    setCount((prevCount) => (prevCount === 0 ? 0 : prevCount - 1));
+  const plus = () =>
+    setCount((prevCount) =>
+      prevCount === product.stock ? product.stock : prevCount + 1
+    );
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      setCount(0);
+      return;
+    }
+    const value = parseInt(e.target.value);
+    if (isNaN(value) || value > product.stock) return;
+    setCount(value);
   };
 
   return (
@@ -47,65 +88,46 @@ export default function Detail({ id }: { id: number }): React.ReactElement {
       <img css={imgStyle} src={product.thumbnail} alt={product.title} />
       <div css={infoStyle}>
         <div css={titleStyle}>{product.title}</div>
-        <div>{product.description}</div>
-        <div>평점 : {product.rating}/5점</div>
-        <div>
-          {Math.round(product.discountPercentage) !== 0 && (
-            <span css={discountStyle}>
-              {Math.round(product.discountPercentage)}%
+        <div css={descStyle}>
+          <div>{product.description}</div>
+          <div>평점 : {product.rating}/5점</div>
+          <div>
+            {Math.round(product.discountPercentage) !== 0 && (
+              <span css={discountStyle}>
+                {Math.round(product.discountPercentage)}%
+              </span>
+            )}
+            <span css={priceStyle}>
+              {Math.round(product.price * 1350).toLocaleString('ko-KR')}원
             </span>
-          )}
-          <span css={priceStyle}>
-            {Math.round(product.price * 1350).toLocaleString('ko-KR')}원
-          </span>
-        </div>
-        <div>
-          <span>(남은수량 : {product.stock})</span>
-          <span css={soldoutStyle}>
-            {product.stock < 10 ? '(매진임박)' : ''}
-          </span>
-        </div>
-        <div css={selectStyle}>
-          <div css={selectboxStyle}>
-            <button
-              onClick={() =>
-                setCount((prevCount) => (prevCount === 0 ? 0 : prevCount - 1))
-              }
-            >
-              -
-            </button>
-            <input
-              type="number"
-              value={count}
-              onChange={(e) => {
-                const value = parseInt(e.target.value);
-                if (isNaN(value)) {
-                  alert('숫자를 입력해주세요');
-                  return;
-                }
-                if (value > product.stock) {
-                  alert('남은 수량을 확인해주세요');
-                  return;
-                }
-                setCount(value);
-              }}
-            />
-            <button
-              onClick={() =>
-                setCount((prevCount) =>
-                  prevCount === product.stock ? product.stock : prevCount + 1
-                )
-              }
-            >
-              +
-            </button>
           </div>
           <div>
-            {Math.round(count * product.price * 1350).toLocaleString('ko-KR')}원
+            <span>(남은수량 : {product.stock})</span>
+            <span css={soldoutStyle}>
+              {product.stock < 10 ? '(매진임박)' : ''}
+            </span>
           </div>
+          <QuantitySelector
+            count={count}
+            minus={minus}
+            plus={plus}
+            handleChange={handleChange}
+            totalCost={Math.round(product.price * count * 1350)}
+          />
         </div>
-        <button onClick={handleAddToCart}>장바구니 담기</button>
+        <div css={buttonContainerStyle}>
+          <button css={buttonStyle} onClick={handleAddToCart}>
+            장바구니 담기
+          </button>
+        </div>
       </div>
+      <Modal
+        message={modalMessage}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        isVisible={showModal}
+        mode={modalMode}
+      />
     </div>
   );
 }

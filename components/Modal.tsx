@@ -11,6 +11,7 @@ interface ModalProps {
   onConfirm: () => void;
   onCancel: () => void;
   isVisible: boolean;
+  mode: 'alert' | 'confirm';
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -18,6 +19,7 @@ const Modal: React.FC<ModalProps> = ({
   onConfirm,
   onCancel,
   isVisible,
+  mode,
 }) => {
   if (!isVisible) return null;
 
@@ -28,9 +30,11 @@ const Modal: React.FC<ModalProps> = ({
         <button css={buttonStyle} onClick={onConfirm}>
           확인
         </button>
-        <button css={buttonStyle} onClick={onCancel}>
-          취소
-        </button>
+        {mode === 'confirm' && (
+          <button css={buttonStyle} onClick={onCancel}>
+            취소
+          </button>
+        )}
       </div>
     </div>
   );

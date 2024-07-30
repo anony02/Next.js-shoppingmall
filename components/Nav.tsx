@@ -43,8 +43,14 @@ export default function Nav(): React.ReactElement {
     if (data) setCategoryList(data);
   }, [data, setCategoryList]);
 
-  const { modal, showModal, modalMessage, handleConfirm, handleCancel } =
-    useModal();
+  const {
+    modal,
+    showModal,
+    modalMessage,
+    handleConfirm,
+    handleCancel,
+    modalMode,
+  } = useModal();
 
   const handleMouseEnter = () =>
     setHoverMessage(isLoggedIn() ? '로그아웃' : '로그인');
@@ -52,19 +58,27 @@ export default function Nav(): React.ReactElement {
 
   const handleUser = () =>
     isLoggedIn()
-      ? modal('로그아웃 하시겠습니까?', () => {
-          localStorage.removeItem('token');
-          localStorage.removeItem('cart');
-          router.push('/');
-        })
+      ? modal(
+          '로그아웃 하시겠습니까?',
+          () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('cart');
+            router.push('/');
+          },
+          'confirm'
+        )
       : router.push('/login');
 
   const handleCart = () =>
     isLoggedIn()
       ? router.push('/cart')
-      : modal('로그인 하시겠습니까?', () => {
-          router.push('/login');
-        });
+      : modal(
+          '로그인 하시겠습니까?',
+          () => {
+            router.push('/login');
+          },
+          'confirm'
+        );
 
   const handleMenuToggle = () => setMenuOpen((prevState) => !prevState);
 
@@ -129,6 +143,7 @@ export default function Nav(): React.ReactElement {
         onConfirm={handleConfirm}
         onCancel={handleCancel}
         isVisible={showModal}
+        mode={modalMode}
       />
     </nav>
   );
