@@ -22,7 +22,6 @@ export const buttonStyle = css`
   border: none;
   cursor: pointer;
   border-radius: 0.5rem;
-  width: 300px;
   height: 50px;
   margin-bottom: 1rem;
 

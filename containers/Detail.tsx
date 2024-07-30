@@ -9,13 +9,14 @@ import {
   imgStyle,
   infoStyle,
   titleStyle,
+  descStyle,
   discountStyle,
   priceStyle,
   soldoutStyle,
-  selectStyle,
-  selectboxStyle,
 } from '../styles/detailStyles';
 import { LoadingSpinner, ErrorMessages } from '../components/FetchingScreen';
+import QuantitySelector from '../components/QuantitySelector';
+import { buttonStyle } from '../styles/loginStyles';
 
 export default function Detail({ id }: { id: number }): React.ReactElement {
   const [count, setCount] = useState<number>(0);
@@ -42,69 +43,60 @@ export default function Detail({ id }: { id: number }): React.ReactElement {
     alert('장바구니에 상품이 추가되었습니다.');
   };
 
+  const minus = () =>
+    setCount((prevCount) => (prevCount === 0 ? 0 : prevCount - 1));
+  const plus = () =>
+    setCount((prevCount) =>
+      prevCount === product.stock ? product.stock : prevCount + 1
+    );
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (isNaN(value)) {
+      alert('숫자를 입력해주세요');
+      return;
+    }
+    if (value > product.stock) {
+      alert('남은 수량을 확인해주세요');
+      return;
+    }
+    setCount(value);
+  };
+
   return (
     <div css={detailStyle}>
       <img css={imgStyle} src={product.thumbnail} alt={product.title} />
       <div css={infoStyle}>
         <div css={titleStyle}>{product.title}</div>
-        <div>{product.description}</div>
-        <div>평점 : {product.rating}/5점</div>
-        <div>
-          {Math.round(product.discountPercentage) !== 0 && (
-            <span css={discountStyle}>
-              {Math.round(product.discountPercentage)}%
+        <div css={descStyle}>
+          <div>{product.description}</div>
+          <div>평점 : {product.rating}/5점</div>
+          <div>
+            {Math.round(product.discountPercentage) !== 0 && (
+              <span css={discountStyle}>
+                {Math.round(product.discountPercentage)}%
+              </span>
+            )}
+            <span css={priceStyle}>
+              {Math.round(product.price * 1350).toLocaleString('ko-KR')}원
             </span>
-          )}
-          <span css={priceStyle}>
-            {Math.round(product.price * 1350).toLocaleString('ko-KR')}원
-          </span>
-        </div>
-        <div>
-          <span>(남은수량 : {product.stock})</span>
-          <span css={soldoutStyle}>
-            {product.stock < 10 ? '(매진임박)' : ''}
-          </span>
-        </div>
-        <div css={selectStyle}>
-          <div css={selectboxStyle}>
-            <button
-              onClick={() =>
-                setCount((prevCount) => (prevCount === 0 ? 0 : prevCount - 1))
-              }
-            >
-              -
-            </button>
-            <input
-              type="number"
-              value={count}
-              onChange={(e) => {
-                const value = parseInt(e.target.value);
-                if (isNaN(value)) {
-                  alert('숫자를 입력해주세요');
-                  return;
-                }
-                if (value > product.stock) {
-                  alert('남은 수량을 확인해주세요');
-                  return;
-                }
-                setCount(value);
-              }}
-            />
-            <button
-              onClick={() =>
-                setCount((prevCount) =>
-                  prevCount === product.stock ? product.stock : prevCount + 1
-                )
-              }
-            >
-              +
-            </button>
           </div>
           <div>
-            {Math.round(count * product.price * 1350).toLocaleString('ko-KR')}원
+            <span>(남은수량 : {product.stock})</span>
+            <span css={soldoutStyle}>
+              {product.stock < 10 ? '(매진임박)' : ''}
+            </span>
           </div>
+          <QuantitySelector
+            count={count}
+            minus={minus}
+            plus={plus}
+            handleChange={handleChange}
+            totalCost={Math.round(product.price * count * 1350)}
+          />
         </div>
-        <button onClick={handleAddToCart}>장바구니 담기</button>
+        <button css={buttonStyle} onClick={handleAddToCart}>
+          장바구니 담기
+        </button>
       </div>
     </div>
   );

@@ -69,9 +69,11 @@ export const deleteStyle = css`
 
 export const select = css`
   display: flex;
+  justify-content: space-between;
   line-height: 30px;
-  align-items: end;
+
   & > div {
+    height: 30px;
     width: 120px;
     text-align: end;
     font-weight: bold;
@@ -79,16 +81,15 @@ export const select = css`
 `;
 
 export const selectbox = css`
-  width: 120px;
-  height: 30px;
   display: flex;
-  align-content: center;
+
   & > button {
     border-collapse: collapse;
     line-height: 30px;
     width: 30px;
     height: 30px;
   }
+
   & > input {
     border: 1px solid rgb(230, 230, 230);
     padding: 0;

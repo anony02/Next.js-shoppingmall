@@ -10,9 +10,8 @@ import {
   soldout,
   btnwrap,
   deleteStyle,
-  select,
-  selectbox,
 } from '../styles/cartitemStyles';
+import QuantitySelector from './QuantitySelector';
 
 interface Product {
   title: string;
@@ -95,23 +94,17 @@ export default function Cartitem({
             <button css={deleteStyle} onClick={() => deleteItem(id)}>
               X
             </button>
-            <div css={select}>
-              <div css={selectbox}>
-                <button onClick={minus}>-</button>
-                <input value={count} onChange={handleChange} />
-                <button onClick={plus}>+</button>
-              </div>
-              <div>
-                {Math.round(product.price * count * 1350).toLocaleString(
-                  'ko-KR'
-                )}
-                원
-              </div>
-            </div>
+            <QuantitySelector
+              count={count}
+              minus={minus}
+              plus={plus}
+              handleChange={handleChange}
+              totalCost={Math.round(product.price * count * 1350)}
+            />
           </div>
         </>
       ) : (
-        <div>제품 정보를 가져오는 중입니다...</div>
+        <div>제품 정보를 가져오는 중입니다.</div>
       )}
     </div>
   );
