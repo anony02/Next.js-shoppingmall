@@ -53,21 +53,11 @@ export default function Nav(): React.ReactElement {
   } = useModal();
 
   const handleMouseEnter = () =>
-    setHoverMessage(isLoggedIn() ? '로그아웃' : '로그인');
+    setHoverMessage(isLoggedIn() ? '마이페이지' : '로그인');
   const handleMouseLeave = () => setHoverMessage('');
 
   const handleUser = () =>
-    isLoggedIn()
-      ? modal(
-          '로그아웃 하시겠습니까?',
-          () => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('cart');
-            router.push('/');
-          },
-          'confirm'
-        )
-      : router.push('/login');
+    isLoggedIn() ? router.push('/mypage') : router.push('/login');
 
   const handleCart = () =>
     isLoggedIn()
