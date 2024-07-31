@@ -2,17 +2,20 @@
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { useQueries } from '@tanstack/react-query';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Cartitem from '../components/Cartitem';
 import { cartState } from '../recoil/atoms';
 import { fetchProduct } from '../utils/api';
+import { useModal } from '../utils/useModal';
 import {
   cartStyle,
-  tohomeStyle,
+  defaultStyle,
+  messageStyle,
   totalStyle,
-  buyStyle,
 } from '../styles/cartStyles';
+import { buttonStyle } from '../styles/loginStyles';
 import { LoadingSpinner, ErrorMessages } from '../components/FetchingScreen';
+import Modal from '../components/Modal';
 
 interface Product {
   id: number;
@@ -26,6 +29,30 @@ interface Product {
 export default function Cart(): React.ReactElement {
   const [cart, setCart] = useRecoilState(cartState);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+
+  const router = useRouter();
+
+  const {
+    modal,
+    showModal,
+    modalMessage,
+    handleConfirm,
+    handleCancel,
+    modalMode,
+  } = useModal();
+
+  const handleBuy = () => {
+    modal('결제를 진행하시겠습니까?', completeBuy, 'confirm');
+  };
+
+  const completeBuy = () => {
+    setTimeout(() => {
+      modal('결제가 완료되었습니다', () => {
+        localStorage.removeItem('cart');
+        setCart({});
+      });
+    }, 0);
+  };
 
   const ids = Object.keys(cart).map((id) => parseInt(id));
   const productQueries = useQueries({
@@ -74,12 +101,12 @@ export default function Cart(): React.ReactElement {
   return (
     <div css={cartStyle}>
       {Object.entries(cart).length === 0 ? (
-        <>
-          장바구니에 상품이 없습니다.
-          <Link css={tohomeStyle} href="/">
+        <div css={defaultStyle}>
+          <div css={messageStyle}>장바구니에 상품이 없습니다.</div>
+          <button css={buttonStyle} onClick={() => router.push('/')}>
             쇼핑하러가기
-          </Link>
-        </>
+          </button>
+        </div>
       ) : (
         <>
           {Object.entries(cart).map(([id, count]) => (
@@ -98,12 +125,16 @@ export default function Cart(): React.ReactElement {
           <div css={totalStyle}>
             총 결제 금액: {totalPrice.toLocaleString('ko-KR')}원
           </div>
-          <button
-            css={buyStyle}
-            onClick={() => alert('결제화면으로 이동합니다.')}
-          >
+          <button css={buttonStyle} onClick={handleBuy}>
             결제하기
           </button>
+          <Modal
+            message={modalMessage}
+            onConfirm={handleConfirm}
+            onCancel={handleCancel}
+            isVisible={showModal}
+            mode={modalMode}
+          />
         </>
       )}
     </div>
