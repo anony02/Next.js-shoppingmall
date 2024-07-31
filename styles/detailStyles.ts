@@ -1,7 +1,8 @@
 import { css } from '@emotion/react';
 
 export const detailStyle = css`
-  padding: 5rem 10rem;
+  margin-top: 50px;
+  padding: 3rem 10rem;
   display: flex;
 `;
 
