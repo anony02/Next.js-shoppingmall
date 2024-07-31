@@ -1,9 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { useRouter } from 'next/navigation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { formStyle } from '../styles/registerStyles';
 import { titleStyle, linkStyle } from '../styles/mypageStyles';
 import Modal from '../components/Modal';
 import { useModal } from '../utils/useModal';
+import { deleteUser } from '../utils/api';
+
+const userid = typeof window !== 'undefined' && localStorage.getItem('token');
 
 const MyPage: React.FC = () => {
   const router = useRouter();
@@ -16,16 +20,38 @@ const MyPage: React.FC = () => {
     modalMode,
   } = useModal();
 
+  const deleteUserMutation = useMutation({
+    mutationFn: deleteUser,
+    onSuccess: () => logoutFn(),
+    onError: () => {
+      alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    },
+  });
+
+  const logoutFn = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('cart');
+    router.push('/');
+  };
+
   const handleLogout = () => {
+    modal('로그아웃 하시겠습니까?', logoutFn, 'confirm');
+  };
+
+  const handleWithdraw = () => {
     modal(
-      '로그아웃 하시겠습니까?',
-      () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('cart');
-        router.push('/');
-      },
+      '회원탈퇴 시 모든 정보가 삭제되며, 복구가 불가능합니다.\n정말 탈퇴하시겠습니까?',
+      completeWithdraw,
       'confirm'
     );
+  };
+
+  const completeWithdraw = () => {
+    setTimeout(() => {
+      modal('회원 탈퇴가 완료되었습니다.\n이용해 주셔서 감사합니다.', () =>
+        deleteUserMutation.mutate(userid as string)
+      );
+    }, 0);
   };
 
   return (
@@ -40,7 +66,7 @@ const MyPage: React.FC = () => {
       <button css={linkStyle} onClick={handleLogout}>
         로그아웃
       </button>
-      <button css={linkStyle} onClick={() => router.push('/withdraw')}>
+      <button css={linkStyle} onClick={handleWithdraw}>
         회원탈퇴
       </button>
       <Modal

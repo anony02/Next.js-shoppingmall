@@ -26,7 +26,9 @@ const Modal: React.FC<ModalProps> = ({
   return (
     <div css={modalOverlayStyle}>
       <div css={modalStyle}>
-        <p>{message}</p>
+        {message.split('\n').map((line, index) => (
+          <p key={index}>{line}</p>
+        ))}
         <button css={buttonStyle} onClick={onConfirm}>
           확인
         </button>

@@ -1,10 +1,3 @@
 {
-  "users": [
-    {
-      "id": "e7c4",
-      "email": "jmjml15@naver.com",
-      "username": "id1234",
-      "password": "qwer1234!"
-    }
-  ]
+  "users": []
 }

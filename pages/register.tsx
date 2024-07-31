@@ -61,9 +61,8 @@ const Register: React.FC = () => {
 
   const registerUserMutation = useMutation({
     mutationFn: registerUser,
-    onSuccess: (data) => {
+    onSuccess: () => {
       alert('회원가입이 완료되었습니다.');
-      console.log(data);
       queryClient.invalidateQueries({
         queryKey: ['checkUsernameExists', username],
       });
@@ -121,7 +120,7 @@ const Register: React.FC = () => {
         css={buttonStyle}
         type="submit"
         disabled={
-          !(email || username || password || confirmPassword) ||
+          !(email && username && password && confirmPassword) ||
           !!(
             emailError ||
             usernameError ||
