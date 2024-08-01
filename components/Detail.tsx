@@ -18,9 +18,9 @@ import {
   buttonContainerStyle,
 } from '../styles/detailStyles';
 import { buttonStyle } from '../styles/loginStyles';
-import { LoadingSpinner, ErrorMessages } from '../components/FetchingScreen';
-import QuantitySelector from '../components/QuantitySelector';
-import Modal from '../components/Modal';
+import { LoadingSpinner, ErrorMessages } from './FetchingScreen';
+import QuantitySelector from './QuantitySelector';
+import Modal from './Modal';
 
 const isLoggedIn = () =>
   typeof window !== 'undefined' && !!localStorage.getItem('token');
@@ -62,7 +62,7 @@ export default function Detail({ id }: { id: number }): React.ReactElement {
       const updatedCart = { ...cart, [product.id]: count };
       setCart(updatedCart);
       localStorage.setItem('cart', JSON.stringify(updatedCart));
-      modal('장바구니에 상품이 추가되었습니다.', () => {}, 'alert');
+      modal('장바구니에 상품이 추가되었습니다.');
     }
   };
 

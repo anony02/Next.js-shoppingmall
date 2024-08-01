@@ -12,11 +12,21 @@ import {
 import { formStyle, LogoStyle } from '../styles/registerStyles';
 import Logo from '../components/Logo';
 import { loginUser } from '../utils/useLogin';
+import { useModal } from '../utils/useModal';
+import Modal from '../components/Modal';
 
 export default function Login(): React.ReactElement {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const router = useRouter();
+  const {
+    modal,
+    showModal,
+    modalMessage,
+    handleConfirm,
+    handleCancel,
+    modalMode,
+  } = useModal();
 
   const useLogin = useMutation({
     mutationFn: loginUser,
@@ -24,7 +34,7 @@ export default function Login(): React.ReactElement {
       localStorage.setItem('token', id);
       router.push('/');
     },
-    onError: (error) => alert(error.message),
+    onError: (error) => modal(error.message),
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -60,6 +70,13 @@ export default function Login(): React.ReactElement {
           회원가입하기
         </Link>
       </div>
+      <Modal
+        message={modalMessage}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        isVisible={showModal}
+        mode={modalMode}
+      />
     </form>
   );
 }
