@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import Detail from '../components/Detail';
+import Detail from '../../components/Detail';
 
 const DetailPage: React.FC = () => {
   const router = useRouter();
