@@ -9,7 +9,7 @@ import { deleteUser } from '../utils/api';
 
 const userid = typeof window !== 'undefined' && localStorage.getItem('token');
 
-const MyPage: React.FC = () => {
+export default function MyPage(): React.ReactElement {
   const router = useRouter();
   const {
     modal,
@@ -24,7 +24,7 @@ const MyPage: React.FC = () => {
     mutationFn: deleteUser,
     onSuccess: () => logoutFn(),
     onError: () => {
-      alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      modal('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     },
   });
 
@@ -34,17 +34,15 @@ const MyPage: React.FC = () => {
     router.push('/');
   };
 
-  const handleLogout = () => {
+  const handleLogout = () =>
     modal('로그아웃 하시겠습니까?', logoutFn, 'confirm');
-  };
 
-  const handleWithdraw = () => {
+  const handleWithdraw = () =>
     modal(
       '회원탈퇴 시 모든 정보가 삭제되며, 복구가 불가능합니다.\n정말 탈퇴하시겠습니까?',
       completeWithdraw,
       'confirm'
     );
-  };
 
   const completeWithdraw = () => {
     setTimeout(() => {
@@ -78,6 +76,4 @@ const MyPage: React.FC = () => {
       />
     </div>
   );
-};
-
-export default MyPage;
+}

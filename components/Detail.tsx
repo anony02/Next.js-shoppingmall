@@ -62,7 +62,7 @@ export default function Detail({ id }: { id: number }): React.ReactElement {
       const updatedCart = { ...cart, [product.id]: count };
       setCart(updatedCart);
       localStorage.setItem('cart', JSON.stringify(updatedCart));
-      modal('장바구니에 상품이 추가되었습니다.', () => {}, 'alert');
+      modal('장바구니에 상품이 추가되었습니다.');
     }
   };
 

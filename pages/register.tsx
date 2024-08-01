@@ -8,6 +8,7 @@ import {
   checkUsernameExists,
   registerUser,
 } from '../utils/api';
+import { useModal } from '../utils/useModal';
 import {
   validateEmail,
   validateUsername,
@@ -16,6 +17,7 @@ import {
 } from '../utils/validators';
 import Logo from '../components/Logo';
 import InputField from '../components/InputField';
+import Modal from '../components/Modal';
 
 const Register: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -29,49 +31,14 @@ const Register: React.FC = () => {
 
   const queryClient = useQueryClient();
   const router = useRouter();
-
-  const checkEmailExistsMutation = useMutation({
-    mutationFn: checkEmailExists,
-    onSuccess: (data) => {
-      if (data.length > 0) {
-        alert('이미 가입된 이메일입니다.');
-      } else {
-        checkUsernameExistsMutation.mutate(username);
-      }
-    },
-    onError: () => {
-      alert('회원가입 중 오류가 발생했습니다.');
-    },
-  });
-
-  const checkUsernameExistsMutation = useMutation({
-    mutationFn: checkUsernameExists,
-    onSuccess: (data) => {
-      if (data.length > 0) {
-        alert('이미 존재하는 아이디입니다.');
-      } else {
-        registerUserMutation.mutate({ email, username, password });
-        router.push('/login');
-      }
-    },
-    onError: () => {
-      alert('회원가입 중 오류가 발생했습니다.');
-    },
-  });
-
-  const registerUserMutation = useMutation({
-    mutationFn: registerUser,
-    onSuccess: () => {
-      alert('회원가입이 완료되었습니다.');
-      queryClient.invalidateQueries({
-        queryKey: ['checkUsernameExists', username],
-      });
-      router.push('/login');
-    },
-    onError: () => {
-      alert('회원가입에 실패했습니다.');
-    },
-  });
+  const {
+    modal,
+    showModal,
+    modalMessage,
+    handleConfirm,
+    handleCancel,
+    modalMode,
+  } = useModal();
 
   useEffect(() => {
     setEmailError(validateEmail(email));
@@ -79,6 +46,47 @@ const Register: React.FC = () => {
     setPasswordError(validatePassword(password));
     setConfirmPasswordError(validateConfirmPassword(password, confirmPassword));
   }, [email, username, password, confirmPassword]);
+
+  const registerUserMutation = useMutation({
+    mutationFn: registerUser,
+    onSuccess: () => {
+      modal('회원가입이 완료되었습니다.', () => router.push('/login'));
+      queryClient.invalidateQueries({
+        queryKey: ['checkUsernameExists', username],
+      });
+    },
+    onError: () => {
+      modal('회원가입에 실패했습니다.');
+    },
+  });
+
+  const checkUsernameExistsMutation = useMutation({
+    mutationFn: checkUsernameExists,
+    onSuccess: (data) => {
+      if (data.length > 0) {
+        modal('이미 존재하는 아이디입니다.');
+      } else {
+        registerUserMutation.mutate({ email, username, password });
+      }
+    },
+    onError: () => {
+      modal('회원가입 중 오류가 발생했습니다.');
+    },
+  });
+
+  const checkEmailExistsMutation = useMutation({
+    mutationFn: checkEmailExists,
+    onSuccess: (data) => {
+      if (data.length > 0) {
+        modal('이미 가입된 이메일입니다.');
+      } else {
+        checkUsernameExistsMutation.mutate(username);
+      }
+    },
+    onError: () => {
+      modal('회원가입 중 오류가 발생했습니다.');
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -131,6 +139,13 @@ const Register: React.FC = () => {
       >
         가입하기
       </button>
+      <Modal
+        message={modalMessage}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        isVisible={showModal}
+        mode={modalMode}
+      />
     </form>
   );
 };
