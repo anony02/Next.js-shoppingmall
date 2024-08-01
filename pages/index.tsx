@@ -1,17 +1,20 @@
 /** @jsxImportSource @emotion/react */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
 import { fetchProducts } from '../utils/api';
 import { productListState, filterState } from '../recoil/atoms';
 import Card from '../components/Card';
 import Filter from '../components/Filter';
+import Pagination from '../components/Pagination';
 import { mainStyle, filtersStyle, productsStyle } from '../styles/mainStyles';
 import { LoadingSpinner, ErrorMessages } from '../components/FetchingScreen';
 
 export default function Main(): React.ReactElement {
   const [list, setList] = useRecoilState(productListState);
   const filter = useRecoilValue(filterState);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 16;
 
   const { data, error, isLoading } = useQuery({
     queryKey: ['products'],
@@ -38,6 +41,16 @@ export default function Main(): React.ReactElement {
     return sortedList;
   };
 
+  const handlePageChange = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const paginatedList = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredList().slice(startIndex, endIndex);
+  };
+
+  const totalPages = Math.ceil(filteredList().length / itemsPerPage);
+
   if (isLoading) return <LoadingSpinner />;
   if (error) return <ErrorMessages />;
 
@@ -50,7 +63,7 @@ export default function Main(): React.ReactElement {
         <Filter name="평점순" filterName="평점순" />
       </div>
       <ul css={productsStyle}>
-        {filteredList().map((el) => (
+        {paginatedList().map((el) => (
           <Card
             key={el.id}
             id={el.id}
@@ -63,6 +76,11 @@ export default function Main(): React.ReactElement {
           />
         ))}
       </ul>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </main>
   );
 }
