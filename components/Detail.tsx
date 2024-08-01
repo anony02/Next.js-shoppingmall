@@ -18,9 +18,9 @@ import {
   buttonContainerStyle,
 } from '../styles/detailStyles';
 import { buttonStyle } from '../styles/loginStyles';
-import { LoadingSpinner, ErrorMessages } from '../components/FetchingScreen';
-import QuantitySelector from '../components/QuantitySelector';
-import Modal from '../components/Modal';
+import { LoadingSpinner, ErrorMessages } from './FetchingScreen';
+import QuantitySelector from './QuantitySelector';
+import Modal from './Modal';
 
 const isLoggedIn = () =>
   typeof window !== 'undefined' && !!localStorage.getItem('token');
