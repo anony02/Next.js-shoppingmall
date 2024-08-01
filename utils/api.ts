@@ -79,3 +79,24 @@ export const updatePassword = async (user: User): Promise<User> => {
 const sendEmail = async (email: string, tempPassword: string) => {
   await axios.post('/api/sendEmail', { email, tempPassword });
 };
+
+// change-email.tsx
+export const changeEmail = async (id: string, email: string) => {
+  const response = await apiClient.patch(`users/${id}`, { email });
+  return response.data;
+};
+
+// change-password.tsx
+export const changePassword = async (id: string, password: string) => {
+  const res = await apiClient.get(`users/${id}`);
+  if (res.data.password === password)
+    throw new Error('기존 비밀번호와 동일합니다');
+  const response = await apiClient.patch(`users/${id}`, { password });
+  return response.data;
+};
+
+// mypage.tsx
+export const deleteUser = async (id: string) => {
+  const response = await apiClient.delete(`users/${id}`);
+  return response.data;
+};
