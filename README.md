@@ -37,6 +37,7 @@
    ```
    EMAIL=이메일
    EMAIL_PASSWORD=앱비밀번호
+   NEXT_PUBLIC_API=json server 주소 (개발 환경에서는 http://localhost:3001)
    ```
 
 ## Project Doc
@@ -64,11 +65,15 @@ _자세한 개발 스택은 package.json 참고_
 6. `/cart`: 장바구니 페이지
 7. `/detail/:id`: 상품별 상세 페이지
 8. `/:category`: 카테고리별 페이지
+9. `/mypage` : 마이페이지
+10. `/change-email` : 이메일 수정 페이지
+11. `/change-password` : 비밀번호 수정 페이지
 
 ## Information
 
 - [project notion](https://www.notion.so/5d3059befa5043a2a0d4adc33ad3c865?pvs=4)
 - 상품정보 API: https://dummyjson.com/docs/products
+- 유저정보 API: json-server (Mock 서버 사용)
 
 ## Author
 
