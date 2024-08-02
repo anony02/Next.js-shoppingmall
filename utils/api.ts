@@ -33,7 +33,7 @@ export const fetchProduct = async (id: number) => {
 
 // register.tsx
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: process.env.NEXT_PUBLIC_API,
   headers: {
     'Content-Type': 'application/json',
   },
