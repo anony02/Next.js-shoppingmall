@@ -80,5 +80,11 @@
     "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4"
   },
+  "engines": {
+    "npm": "please-use-yarn",
+    "yarn": ">=4",
+    "pnpm": "please-use-yarn",
+    "node": ">=20"
+  },
   "packageManager": "yarn@4.3.1"
 }
