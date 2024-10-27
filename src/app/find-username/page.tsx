@@ -1,19 +1,15 @@
 /** @jsxImportSource @emotion/react */
+'use client';
 import { useState, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import {
-  formStyle,
-  inputWrapperStyle,
-  buttonStyle,
-  LogoStyle,
-} from '../styles/registerStyles';
-import { buttonContainerStyle } from '../styles/findUsernameStyles';
-import { validateEmail } from '../utils/validators';
-import { checkEmailExists } from '../utils/api';
-import Logo from '../components/Logo';
-import InputField from '../components/InputField';
-import { User } from '../types';
+import { validateEmail } from '../../utils/validators';
+import { checkEmailExists } from '../../utils/api';
+import Logo from '../../components/Logo';
+import InputField from '../../components/InputField';
+import { User } from '../../types';
+import { formStyle, inputWrapperStyle, buttonStyle, LogoStyle } from '../../styles/registerStyles';
+import { buttonContainerStyle } from '../../styles/findUsernameStyles';
 
 export default function FindUsername(): React.ReactElement {
   const [email, setEmail] = useState<string>('');
@@ -88,9 +84,7 @@ export default function FindUsername(): React.ReactElement {
               {userFound ? (
                 <>
                   회원님의 아이디는
-                  <strong css={{ fontWeight: 'bold', color: 'blue' }}>
-                    {` ${message} `}
-                  </strong>
+                  <strong css={{ fontWeight: 'bold', color: 'blue' }}>{` ${message} `}</strong>
                   입니다.
                 </>
               ) : (
@@ -102,11 +96,7 @@ export default function FindUsername(): React.ReactElement {
         {error && <p>{error.message}</p>}
       </div>
       <div css={buttonContainerStyle}>
-        <button
-          css={buttonStyle}
-          type="submit"
-          disabled={!email || !!emailError}
-        >
+        <button css={buttonStyle} type="submit" disabled={!email || !!emailError}>
           아이디 찾기
         </button>
         <button css={buttonStyle} onClick={() => router.push('/login')}>

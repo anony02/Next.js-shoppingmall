@@ -1,16 +1,7 @@
 /** @jsxImportSource @emotion/react */
+'use client';
 import { useState } from 'react';
-import {
-  cartitem,
-  img,
-  info,
-  title,
-  discount,
-  price,
-  soldout,
-  btnwrap,
-  deleteStyle,
-} from '../styles/cartitemStyles';
+import { cartitem, img, info, title, discount, price, soldout, btnwrap, deleteStyle } from '../styles/cartitemStyles';
 import QuantitySelector from './QuantitySelector';
 
 interface Product {
@@ -29,13 +20,7 @@ interface CartitemProps {
   deleteItem: (id: number) => void;
 }
 
-export default function Cartitem({
-  id,
-  quantity,
-  product,
-  changecnt,
-  deleteItem,
-}: CartitemProps): React.ReactElement {
+export default function Cartitem({ id, quantity, product, changecnt, deleteItem }: CartitemProps): React.ReactElement {
   const [count, setCount] = useState(quantity);
 
   const minus = () => {
@@ -73,19 +58,13 @@ export default function Cartitem({
             <div css={title}>{product.title}</div>
             <div>
               {Math.round(product.discountPercentage) !== 0 && (
-                <span css={discount}>
-                  {Math.round(product.discountPercentage)}%
-                </span>
+                <span css={discount}>{Math.round(product.discountPercentage)}%</span>
               )}
-              <span css={price}>
-                {Math.round(product.price * 1350).toLocaleString('ko-KR')}원
-              </span>
+              <span css={price}>{Math.round(product.price * 1350).toLocaleString('ko-KR')}원</span>
             </div>
             <div>
               <span>(남은수량 : {product.stock})</span>
-              <span css={soldout}>
-                {product.stock < 10 ? '(매진임박)' : ''}
-              </span>
+              <span css={soldout}>{product.stock < 10 ? '(매진임박)' : ''}</span>
             </div>
           </div>
           <div css={btnwrap}>

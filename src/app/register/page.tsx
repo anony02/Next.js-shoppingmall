@@ -1,23 +1,15 @@
 /** @jsxImportSource @emotion/react */
+'use client';
 import { useState, useEffect } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { formStyle, buttonStyle, LogoStyle } from '../styles/registerStyles';
-import {
-  checkEmailExists,
-  checkUsernameExists,
-  registerUser,
-} from '../utils/api';
-import { useModal } from '../utils/useModal';
-import {
-  validateEmail,
-  validateUsername,
-  validatePassword,
-  validateConfirmPassword,
-} from '../utils/validators';
-import Logo from '../components/Logo';
-import InputField from '../components/InputField';
-import Modal from '../components/Modal';
+import { checkEmailExists, checkUsernameExists, registerUser } from '../../utils/api';
+import { useModal } from '../../utils/useModal';
+import { validateEmail, validateUsername, validatePassword, validateConfirmPassword } from '../../utils/validators';
+import Logo from '../../components/Logo';
+import InputField from '../../components/InputField';
+import Modal from '../../components/Modal';
+import { formStyle, buttonStyle, LogoStyle } from '../../styles/registerStyles';
 
 const Register: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -31,14 +23,7 @@ const Register: React.FC = () => {
 
   const queryClient = useQueryClient();
   const router = useRouter();
-  const {
-    modal,
-    showModal,
-    modalMessage,
-    handleConfirm,
-    handleCancel,
-    modalMode,
-  } = useModal();
+  const { modal, showModal, modalMessage, handleConfirm, handleCancel, modalMode } = useModal();
 
   useEffect(() => {
     setEmailError(validateEmail(email));
@@ -129,12 +114,7 @@ const Register: React.FC = () => {
         type="submit"
         disabled={
           !(email && username && password && confirmPassword) ||
-          !!(
-            emailError ||
-            usernameError ||
-            passwordError ||
-            confirmPasswordError
-          )
+          !!(emailError || usernameError || passwordError || confirmPasswordError)
         }
       >
         가입하기

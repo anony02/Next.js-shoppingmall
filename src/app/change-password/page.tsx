@@ -1,17 +1,14 @@
 /** @jsxImportSource @emotion/react */
+'use client';
 import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import {
-  formStyle,
-  inputWrapperStyle,
-  buttonStyle,
-} from '../styles/registerStyles';
-import { buttonContainerStyle } from '../styles/findUsernameStyles';
-import { validatePassword } from '../utils/validators';
-import { changePassword } from '../utils/api';
-import InputField from '../components/InputField';
-import { titleStyle } from '../styles/mypageStyles';
+import { validatePassword } from '../../utils/validators';
+import { changePassword } from '../../utils/api';
+import InputField from '../../components/InputField';
+import { formStyle, inputWrapperStyle, buttonStyle } from '../../styles/registerStyles';
+import { buttonContainerStyle } from '../../styles/findUsernameStyles';
+import { titleStyle } from '../../styles/mypageStyles';
 
 const userid = typeof window !== 'undefined' && localStorage.getItem('token');
 
@@ -23,14 +20,9 @@ export default function FindUsername(): React.ReactElement {
   const router = useRouter();
 
   const mutation = useMutation({
-    mutationFn: (newPassword: string) =>
-      changePassword(userid as string, newPassword),
+    mutationFn: (newPassword: string) => changePassword(userid as string, newPassword),
     onSuccess: () => setMessage('비밀번호가 성공적으로 변경되었습니다.'),
-    onError: (err) =>
-      setMessage(
-        err.message ||
-          '비밀번호 변경 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
-      ),
+    onError: (err) => setMessage(err.message || '비밀번호 변경 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'),
   });
 
   useEffect(() => {
@@ -46,13 +38,7 @@ export default function FindUsername(): React.ReactElement {
   return (
     <form css={formStyle} onSubmit={handleSubmit}>
       <h2 css={titleStyle}>비밀번호 변경</h2>
-      <InputField
-        label="비밀번호"
-        type="password"
-        value={pw}
-        onChange={(e) => setPw(e.target.value)}
-        error={pwError}
-      />
+      <InputField label="비밀번호" type="password" value={pw} onChange={(e) => setPw(e.target.value)} error={pwError} />
       <div css={inputWrapperStyle}>{message && <p>{message}</p>}</div>
       <div css={buttonContainerStyle}>
         <button css={buttonStyle} type="submit" disabled={!pw || !!pwError}>

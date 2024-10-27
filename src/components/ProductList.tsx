@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+'use client';
 import Filter from './Filter';
 import Card from './Card';
 import Pagination from './Pagination';
@@ -10,17 +11,8 @@ interface ProductListProps {
   category?: string;
 }
 
-export default function ProductList({
-  category,
-}: ProductListProps): React.ReactElement {
-  const {
-    isLoading,
-    error,
-    paginatedList,
-    handlePageChange,
-    currentPage,
-    totalPages,
-  } = useProductList({ category });
+export default function ProductList({ category }: ProductListProps): React.ReactElement {
+  const { isLoading, error, paginatedList, handlePageChange, currentPage, totalPages } = useProductList({ category });
 
   if (isLoading) return <LoadingSpinner />;
   if (error) return <ErrorMessages />;
@@ -47,11 +39,7 @@ export default function ProductList({
           />
         ))}
       </ul>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
     </main>
   );
 }

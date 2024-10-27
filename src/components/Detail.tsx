@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+'use client';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
@@ -22,8 +23,7 @@ import { LoadingSpinner, ErrorMessages } from './FetchingScreen';
 import QuantitySelector from './QuantitySelector';
 import Modal from './Modal';
 
-const isLoggedIn = () =>
-  typeof window !== 'undefined' && !!localStorage.getItem('token');
+const isLoggedIn = () => typeof window !== 'undefined' && !!localStorage.getItem('token');
 
 export default function Detail({ id }: { id: number }): React.ReactElement {
   const [count, setCount] = useState<number>(0);
@@ -31,14 +31,7 @@ export default function Detail({ id }: { id: number }): React.ReactElement {
 
   const router = useRouter();
 
-  const {
-    modal,
-    showModal,
-    modalMessage,
-    handleConfirm,
-    handleCancel,
-    modalMode,
-  } = useModal();
+  const { modal, showModal, modalMessage, handleConfirm, handleCancel, modalMode } = useModal();
 
   const {
     data: product,
@@ -52,7 +45,7 @@ export default function Detail({ id }: { id: number }): React.ReactElement {
 
   if (isLoading) return <LoadingSpinner />;
   if (error) return <ErrorMessages />;
-  if (!product) return <div>상품 정보가 없습니다.</div>;
+  if (!product) return <div css={detailStyle}>상품 정보가 없습니다.</div>;
 
   const handleAddToCart = () => {
     if (!count) return;
@@ -66,12 +59,8 @@ export default function Detail({ id }: { id: number }): React.ReactElement {
     }
   };
 
-  const minus = () =>
-    setCount((prevCount) => (prevCount === 0 ? 0 : prevCount - 1));
-  const plus = () =>
-    setCount((prevCount) =>
-      prevCount === product.stock ? product.stock : prevCount + 1
-    );
+  const minus = () => setCount((prevCount) => (prevCount === 0 ? 0 : prevCount - 1));
+  const plus = () => setCount((prevCount) => (prevCount === product.stock ? product.stock : prevCount + 1));
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === '') {
@@ -93,19 +82,13 @@ export default function Detail({ id }: { id: number }): React.ReactElement {
           <div>평점 : {product.rating}/5점</div>
           <div>
             {Math.round(product.discountPercentage) !== 0 && (
-              <span css={discountStyle}>
-                {Math.round(product.discountPercentage)}%
-              </span>
+              <span css={discountStyle}>{Math.round(product.discountPercentage)}%</span>
             )}
-            <span css={priceStyle}>
-              {Math.round(product.price * 1350).toLocaleString('ko-KR')}원
-            </span>
+            <span css={priceStyle}>{Math.round(product.price * 1350).toLocaleString('ko-KR')}원</span>
           </div>
           <div>
             <span>(남은수량 : {product.stock})</span>
-            <span css={soldoutStyle}>
-              {product.stock < 10 ? '(매진임박)' : ''}
-            </span>
+            <span css={soldoutStyle}>{product.stock < 10 ? '(매진임박)' : ''}</span>
           </div>
           <QuantitySelector
             count={count}
