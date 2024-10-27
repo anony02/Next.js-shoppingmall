@@ -29,8 +29,7 @@ export const fetchProduct = async (id: number) => {
 
 // register.tsx
 const apiClient = axios.create({
-  // baseURL: process.env.NEXT_PUBLIC_API,
-  baseURL: 'https://alkaline-guttural-bergamot.glitch.me',
+  baseURL: process.env.NEXT_PUBLIC_API,
   headers: {
     'Content-Type': 'application/json',
   },
