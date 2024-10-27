@@ -3,7 +3,8 @@ import { useParams } from 'next/navigation';
 import Detail from '../../../components/Detail';
 
 const DetailPage: React.FC = () => {
-  const id = useParams();
+  const params = useParams();
+  const id = params?.id as string;
 
   const idNum = Number(id);
 

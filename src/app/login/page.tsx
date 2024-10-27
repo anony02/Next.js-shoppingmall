@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
 'use client';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
-import { inputStyle, buttonStyle, linkContainerStyle, linkStyle } from '../../styles/loginStyles';
-import { formStyle, LogoStyle } from '../../styles/registerStyles';
-import Logo from '../../components/Logo';
 import { loginUser } from '../../utils/useLogin';
 import { useModal } from '../../utils/useModal';
+import Logo from '../../components/Logo';
 import Modal from '../../components/Modal';
+import { inputStyle, buttonStyle, linkContainerStyle, linkStyle } from '../../styles/loginStyles';
+import { formStyle, LogoStyle } from '../../styles/registerStyles';
 
 export default function Login(): React.ReactElement {
   const [username, setUsername] = useState<string>('');

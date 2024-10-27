@@ -8,16 +8,12 @@ export const fetchProducts = async (): Promise<Product[]> => {
 };
 
 export const fetchCategories = async (): Promise<string[]> => {
-  const response = await axios.get(
-    'https://dummyjson.com/products/category-list'
-  );
+  const response = await axios.get('https://dummyjson.com/products/category-list');
   return response.data;
 };
 
 export const fetchCategoryProducts = async (category: string) => {
-  const response = await axios.get(
-    `https://dummyjson.com/products/category/${category}`
-  );
+  const response = await axios.get(`https://dummyjson.com/products/category/${category}`);
   return response.data.products;
 };
 
@@ -33,7 +29,8 @@ export const fetchProduct = async (id: number) => {
 
 // register.tsx
 const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API,
+  // baseURL: process.env.NEXT_PUBLIC_API,
+  baseURL: 'https://alkaline-guttural-bergamot.glitch.me',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -89,8 +86,7 @@ export const changeEmail = async (id: string, email: string) => {
 // change-password.tsx
 export const changePassword = async (id: string, password: string) => {
   const res = await apiClient.get(`users/${id}`);
-  if (res.data.password === password)
-    throw new Error('기존 비밀번호와 동일합니다');
+  if (res.data.password === password) throw new Error('기존 비밀번호와 동일합니다');
   const response = await apiClient.patch(`users/${id}`, { password });
   return response.data;
 };

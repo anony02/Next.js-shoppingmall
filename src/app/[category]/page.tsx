@@ -1,9 +1,9 @@
-import { useRouter } from 'next/router';
+'use client';
+import { useParams } from 'next/navigation';
 import ProductList from '../../components/ProductList';
 
 export default function CategoryPage(): React.ReactElement {
-  const router = useRouter();
-  const { category } = router.query;
+  const category = useParams();
 
   const categoryString = typeof category === 'string' ? category : '';
 
