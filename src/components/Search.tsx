@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
@@ -36,8 +37,7 @@ export default function Search(): React.ReactElement {
   const id = list.map((x) => x.id);
   const findid = (x: string) => id[title.indexOf(x)];
 
-  const onchange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setInput(e.target.value);
+  const onchange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value);
 
   const onkeyup = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (dropdown.length === 0) return;
@@ -66,7 +66,7 @@ export default function Search(): React.ReactElement {
         </span>
       ) : (
         part
-      )
+      ),
     );
   };
 
@@ -78,11 +78,7 @@ export default function Search(): React.ReactElement {
       setDropdown(
         title
           .filter((el) => el.toLowerCase().includes(inputToLower))
-          .sort(
-            (a, b) =>
-              a.toLowerCase().indexOf(inputToLower) -
-              b.toLowerCase().indexOf(inputToLower)
-          )
+          .sort((a, b) => a.toLowerCase().indexOf(inputToLower) - b.toLowerCase().indexOf(inputToLower)),
       );
     }
   }, [input]);
@@ -93,21 +89,10 @@ export default function Search(): React.ReactElement {
 
   return (
     <div css={dropdown.length > 0 ? searchboxActive : searchbox}>
-      <svg
-        css={searchicon}
-        focusable="false"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-      >
+      <svg css={searchicon} focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
       </svg>
-      <input
-        css={searchinput}
-        placeholder="상품 검색"
-        value={input}
-        onChange={onchange}
-        onKeyUp={onkeyup}
-      />
+      <input css={searchinput} placeholder="상품 검색" value={input} onChange={onchange} onKeyUp={onkeyup} />
       {dropdown.length > 0 && (
         <div css={dropdownStyle}>
           {dropdown.map((el, i) => (

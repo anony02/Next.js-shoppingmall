@@ -15,9 +15,7 @@ export const useProductList = ({ category }: UseProductListParams) => {
   const itemsPerPage = 16;
 
   const queryKey = category ? ['categoryProducts', category] : ['products'];
-  const queryFn = category
-    ? () => fetchCategoryProducts(category)
-    : fetchProducts;
+  const queryFn = category ? () => fetchCategoryProducts(category) : fetchProducts;
 
   const { data, error, isLoading } = useQuery({ queryKey, queryFn });
 

@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
@@ -23,8 +24,7 @@ import { HamburgerIcon, UserIcon, CartIcon } from './NavIcons';
 import Modal from './Modal';
 import { useModal } from '../utils/useModal';
 
-const isLoggedIn = () =>
-  typeof window !== 'undefined' && !!localStorage.getItem('token');
+const isLoggedIn = () => typeof window !== 'undefined' && !!localStorage.getItem('token');
 
 export default function Nav(): React.ReactElement {
   const [hoverMessage, setHoverMessage] = useState<string>('');
@@ -43,21 +43,12 @@ export default function Nav(): React.ReactElement {
     if (data) setCategoryList(data);
   }, [data, setCategoryList]);
 
-  const {
-    modal,
-    showModal,
-    modalMessage,
-    handleConfirm,
-    handleCancel,
-    modalMode,
-  } = useModal();
+  const { modal, showModal, modalMessage, handleConfirm, handleCancel, modalMode } = useModal();
 
-  const handleMouseEnter = () =>
-    setHoverMessage(isLoggedIn() ? '마이페이지' : '로그인');
+  const handleMouseEnter = () => setHoverMessage(isLoggedIn() ? '마이페이지' : '로그인');
   const handleMouseLeave = () => setHoverMessage('');
 
-  const handleUser = () =>
-    isLoggedIn() ? router.push('/mypage') : router.push('/login');
+  const handleUser = () => (isLoggedIn() ? router.push('/mypage') : router.push('/login'));
 
   const handleCart = () =>
     isLoggedIn()
@@ -67,7 +58,7 @@ export default function Nav(): React.ReactElement {
           () => {
             router.push('/login');
           },
-          'confirm'
+          'confirm',
         );
 
   const handleMenuToggle = () => setMenuOpen((prevState) => !prevState);
@@ -92,11 +83,7 @@ export default function Nav(): React.ReactElement {
           <div css={listStyle} className={menuOpen ? 'open' : ''}>
             {data?.map((category: string) => (
               <Link
-                css={
-                  selectedCategory === category
-                    ? selectedCategoryStyle
-                    : undefined
-                }
+                css={selectedCategory === category ? selectedCategoryStyle : undefined}
                 onClick={(e) => {
                   e.preventDefault();
                   handleCategoryClick(category);

@@ -1,3 +1,4 @@
+'use client';
 import { useState, useCallback } from 'react';
 
 export function useModal() {
@@ -8,17 +9,13 @@ export function useModal() {
   const [modalMode, setModalMode] = useState<'alert' | 'confirm'>('alert');
 
   const modal = useCallback(
-    (
-      message: string,
-      onConfirm: () => void = () => {},
-      mode: 'alert' | 'confirm' = 'alert'
-    ) => {
+    (message: string, onConfirm: () => void = () => {}, mode: 'alert' | 'confirm' = 'alert') => {
       setModalMessage(message);
       setModalConfirm(() => onConfirm);
       setShowModal(true);
       setModalMode(mode);
     },
-    []
+    [],
   );
 
   const handleConfirm = () => {

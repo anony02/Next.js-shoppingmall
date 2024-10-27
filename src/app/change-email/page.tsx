@@ -1,18 +1,15 @@
 /** @jsxImportSource @emotion/react */
+'use client';
 import { useState, useEffect } from 'react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import {
-  formStyle,
-  inputWrapperStyle,
-  buttonStyle,
-} from '../styles/registerStyles';
-import { buttonContainerStyle } from '../styles/findUsernameStyles';
-import { validateEmail } from '../utils/validators';
-import { checkEmailExists, changeEmail } from '../utils/api';
-import InputField from '../components/InputField';
-import { User } from '../types';
-import { titleStyle } from '../styles/mypageStyles';
+import { validateEmail } from '../../utils/validators';
+import { checkEmailExists, changeEmail } from '../../utils/api';
+import InputField from '../../components/InputField';
+import { User } from '../../types';
+import { formStyle, inputWrapperStyle, buttonStyle } from '../../styles/registerStyles';
+import { titleStyle } from '../../styles/mypageStyles';
+import { buttonContainerStyle } from '../../styles/findUsernameStyles';
 
 const userid = typeof window !== 'undefined' && localStorage.getItem('token');
 
@@ -38,9 +35,7 @@ export default function FindUsername(): React.ReactElement {
       setEnabled(false);
     },
     onError: () => {
-      setMessage(
-        '이메일 변경 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
-      );
+      setMessage('이메일 변경 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
       setEnabled(false);
     },
   });
@@ -94,11 +89,7 @@ export default function FindUsername(): React.ReactElement {
         {message && <p>{message}</p>}
       </div>
       <div css={buttonContainerStyle}>
-        <button
-          css={buttonStyle}
-          type="submit"
-          disabled={!email || !!emailError}
-        >
+        <button css={buttonStyle} type="submit" disabled={!email || !!emailError}>
           변경하기
         </button>
         <button css={buttonStyle} onClick={() => router.push('/mypage')}>

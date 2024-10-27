@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import ProductList from '../components/ProductList';
+import ProductList from '../../components/ProductList';
 
 export default function CategoryPage(): React.ReactElement {
   const router = useRouter();

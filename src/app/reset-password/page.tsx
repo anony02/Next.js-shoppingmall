@@ -2,18 +2,13 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import {
-  formStyle,
-  inputWrapperStyle,
-  buttonStyle,
-  LogoStyle,
-} from '../styles/registerStyles';
-import { buttonContainerStyle } from '../styles/findUsernameStyles';
-import { validateEmail } from '../utils/validators';
-import { checkEmailExists, updatePassword } from '../utils/api';
-import Logo from '../components/Logo';
-import InputField from '../components/InputField';
-import { User } from '../types';
+import { formStyle, inputWrapperStyle, buttonStyle, LogoStyle } from '../../styles/registerStyles';
+import { buttonContainerStyle } from '../../styles/findUsernameStyles';
+import { validateEmail } from '../../utils/validators';
+import { checkEmailExists, updatePassword } from '../../utils/api';
+import Logo from '../../components/Logo';
+import InputField from '../../components/InputField';
+import { User } from '../../types';
 
 export default function FindPassword(): React.ReactElement {
   const [email, setEmail] = useState<string>('');
@@ -95,23 +90,13 @@ export default function FindPassword(): React.ReactElement {
           <p>로딩 중...</p>
         ) : (
           userFound !== null && (
-            <p>
-              {userFound ? (
-                <span>임시 비밀번호가 이메일로 발송되었습니다.</span>
-              ) : (
-                <span>{message}</span>
-              )}
-            </p>
+            <p>{userFound ? <span>임시 비밀번호가 이메일로 발송되었습니다.</span> : <span>{message}</span>}</p>
           )
         )}
         {error && <p>{message}</p>}
       </div>
       <div css={buttonContainerStyle}>
-        <button
-          css={buttonStyle}
-          type="submit"
-          disabled={!email || !!emailError}
-        >
+        <button css={buttonStyle} type="submit" disabled={!email || !!emailError}>
           임시 비밀번호 받기
         </button>
         <button css={buttonStyle} onClick={() => router.push('/login')}>
